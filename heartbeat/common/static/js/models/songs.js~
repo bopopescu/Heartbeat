@@ -1,0 +1,10 @@
+define([
+    'jquery',
+    'backbone',
+    'underscore',
+    'song',
+], function ($, Backbone, _, Song) {
+    var Songs = Backbone.Collection.extend({
+
+    });
+});

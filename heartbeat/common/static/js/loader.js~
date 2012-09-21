@@ -1,0 +1,14 @@
+define([
+], function() {
+    return {
+        load: function(url, callback) {
+            $("#content").load(url, function(resp, b, c) {
+                if (resp['redirect']) {
+                    load(resp['redirect']);
+                }
+                callback(resp, b, c);
+            });
+        }
+    }
+
+}

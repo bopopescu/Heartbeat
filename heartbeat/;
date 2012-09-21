@@ -1,0 +1,26 @@
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'artist',
+  'text!templates/artistDetail.html',
+  'text!templates/album.html',
+], function($, _, Backbone, Artist, artistDetailTemplate) {
+  var ArtistDetail = Backbone.View.extend({
+    el: $("#artist"),
+    defaults : {},
+    initialize: function(options) {
+      _.defaults(options, this.defaults);
+      _.bindAll(this, 'render');
+      this.model.bind("change", this.render);
+      this.render();
+    }, 
+    render: function() {
+      var artist = this.model;
+      $(this.el).append(_.template(artistDetailTemplate, {
+        'name': artist.get("name"),
+      }));
+    }
+  });
+  return ArtistDetail;
+});

@@ -1,0 +1,58 @@
+define([
+    'jquery',
+    'backbone',
+    'user',
+    'underscore',
+    'text!templates/loginBoxTemplate.html',
+    'bootstrapDropdown',
+    'jquery.forms',
+], function ($, Backbone,  User, _, loginBoxTemplate) {
+    LoginBox = Backbone.View.extend({
+        el: $("#login_box"),
+        defaults: {
+            content: $("#content"),
+        },
+        initialize: function(options) {
+            _.defaults(this.options, this.defaults);
+            _.bindAll(this, 'render', 'logout');
+            this.model.bind('change', this.render);
+            this.render();
+        },
+        events: {
+            "click #logout": "logout",
+            "click #username": "loadUserPage",
+            "click #register": "register"
+        },
+        render: function() {
+            var template = _.template( loginBoxTemplate, {
+                'username': (this.model.get('username') == null) ? "" : this.model.get('username'),
+                'csrf_token': this.model.get('csrf_token')
+            });
+            $(this.el).html(template);
+            var user = this.model;
+            $(this.el).find("form").ajaxForm({
+                success: user.logIn,
+                beforeSend: function(xhr, a, b, c) {
+                    console.log(xhr);
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                },
+            });
+        },
+        loadUserPage: function() {
+
+        },
+        logout: function() {
+            this.model.logOut();
+            console.log(document.location['pathname']);
+            this.trigger("refresh");
+            this.options.content.load(document.location['pathname']);
+        },
+        register: function() {
+
+        }
+    });
+    
+    return LoginBox
+});

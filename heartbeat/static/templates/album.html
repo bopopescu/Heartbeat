@@ -1,0 +1,13 @@
+<div class="well">
+  <tr>
+    <td><img src="/<%- cover %>" /></td><td><%= title %></td><td><a href="/artists/<%= artist_id %>/"><%= artist_name %></a></td><td><%= release_date %></td><td><a href="/artists/albums/<%= id %>/">details</a></td>
+</td>
+</tr>
+<table style="width:100%" class="table-striped">
+<% _.each(songs, function(song) { %>
+  <tr>
+    <td><%= song.get("name") %></td><td>download</td>
+  </tr>
+<% }); %>
+</table>
+</div>

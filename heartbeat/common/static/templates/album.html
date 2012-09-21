@@ -1,0 +1,14 @@
+<div class="well">
+  <img class="pull-left img-rounded" width=140 src="/<%= cover %>" /><h2><%= title %></h2> 
+  <br />
+  Released <time class="timeago" datetime="<%= release_date %>"></time><br />
+  <i class="icon-download-alt"></i>
+  <a href="/artists/albums/<%= id %>/">details</a>
+<table style="width:100%" class="table-striped">
+<% _.each(songs, function(song) { %>
+  <tr>
+    <td><%= song.get("name") %></td><td>download</td>
+  </tr>
+<% }); %>
+</table>
+</div>

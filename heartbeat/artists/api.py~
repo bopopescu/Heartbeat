@@ -1,0 +1,13 @@
+from models import Artist
+
+from tastypie.resources import ModelResource
+
+class ArtistResource(ModelResource):
+    """A resource for artists
+    Allows for retrieving artist information,
+    especially top artists for a particular user
+
+    """
+    class Meta:
+        queryset = Artist.objects.all()
+        

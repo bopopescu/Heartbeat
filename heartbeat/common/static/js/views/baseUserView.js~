@@ -1,0 +1,6 @@
+define([
+    'jquery',
+    'backbone',
+    'user',
+    'underscore',
+], function ($, Backbone,  User, _) {

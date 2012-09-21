@@ -1,0 +1,57 @@
+<form class="form-horizontal" name="register" method="POST" action="/register/">
+  <fieldset>
+    <div class="control-group<% if (username_error) {%> error <% } %>">
+      <label class="control-label" <% if (username_error) {%> for="inputError" <% } %>>username</label>
+      <div class="controls">
+        <input type="text" name="username" id="username" value="<%= username %>" />
+        <span class="help-inline"><%= username_error %></span>
+      </div>
+    </div>
+    <div class="control-group<% if (email_error) {%> error <% } %>">
+      <label class="control-label">email</label>
+      <div class="controls">
+        <input type="text" name="email" id="email" value="<%= email %>" />
+        <span class="help-inline"><%= email_error %></span>
+      </div>
+    </div>
+    <div class="control-group<% if (password_error) {%> error <% } %>">
+          <label class="control-label">password</label>
+      <div class="controls">
+        <input type="password" name="password1" id="password1" value="<%= password1 %>" />
+        <span class="help-inline"><%= password_error %></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">password confirmation</label>
+      <div class="controls">
+        <input type="password" name="password2" id="password2" value="<%= password2 %>" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">register as an artist?</label>
+      <div class="controls">
+        <input type="checkbox" name="artist" id="artist" <% if (is_artist) { %> checked="true" <% } %> />
+      </div>
+    </div> 
+    <div id="artist_name_box" class="control-group<% if (name_error) {%> error <% } %>">
+      <label id="artist_name_label" class="control-label">artist name</label>
+      <div class="controls">
+        <input type="text" name="name" id="name" value="<%= name %>"/>
+        <span class="help-inline"><%= name_error %></span>
+      </div>
+    </div> 
+    <div id="artist_bio_box" class="control-group<% if (bio_error) {%> error <% } %>">
+      <label class="control-label">include a bio</label>
+      <div class="controls">
+        <input type="text" name="bio" id="bio" value="<%= bio %>"/>
+        <span class="help-inline"><%= bio_error %></span>
+      </div>
+    </div> 
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" name="register" value="register">register</button>
+    </div>
+
+    
+    </fieldset>
+
+</form>

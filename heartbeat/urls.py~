@@ -1,0 +1,30 @@
+from django.conf.urls import patterns, include, url
+from django.contrib import admin
+
+from tastypie.api import Api
+
+from artists.api import ArtistResource, AlbumResource
+from users.api import UserResource, ProfileResource
+
+admin.autodiscover()
+
+users_api = Api(api_name="users")
+users_api.register(UserResource())
+users_api.register(ProfileResource())
+
+users_api.register(ArtistResource())
+users_api.register(AlbumResource())
+
+urlpatterns = patterns(
+    '',
+    # Examples:
+    # url(r'^$', 'heartbeat.views.home', name='home'),
+    # url(r'^heartbeat/', include('heartbeat.foo.urls')),
+
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^', include('artists.urls')),
+    url(r'^users/', include('users.urls')),
+    url(r'^api/', include(users_api.urls)),
+    url(r'^admin/', include(admin.site.urls)),
+)

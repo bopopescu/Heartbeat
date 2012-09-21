@@ -1,0 +1,15 @@
+a {
+    cursor:pointer;
+}
+.link {
+    background: none;
+    border: none;
+}
+
+form label {
+    display:inline;
+}
+
+.dropdown {
+    z-index: 3;
+}

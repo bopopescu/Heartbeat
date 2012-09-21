@@ -1,0 +1,30 @@
+define([
+    'jquery',
+    'backbone',
+    'underscore',
+    'album',
+    'text!templates/albumBox.html',
+], function($, Backbone, _, Album, albumBoxTemplate) {
+    AlbumListView = Backbone.View.extend({
+        el: $("#album_list"),
+        defaults: {
+
+        },
+        initialize: function(options) {
+            _.defaults(options, this.defaults);
+            _.bindAll(this, 'render');
+            
+            this.render();
+        },
+        render: function() {
+//            $(this.el).empty();
+            
+            /*this.collection.each(function(album) {
+                $(that.el).append(_.template(AlbumBoxTemplate, {}));
+            });*/
+//            alert(_.template(AlbumBoxTemplate, {}));
+            $(this.el).html(_.template(albumBoxTemplate, { 'title': 'title!'}));
+        },
+    });
+    return AlbumListView;
+});
