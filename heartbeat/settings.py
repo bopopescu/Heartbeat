@@ -13,7 +13,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': dj_databases_url.config(default='postgres://localhost')
+    'default': dj_database_url.config(default='postgres://localhost')
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
 #        'NAME': 'heartbeat',                      # Or path to database file if using sqlite3.
