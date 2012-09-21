@@ -1,4 +1,5 @@
 # Django settings for heartbeat project.
+import dj_database_url
 import os.path
 
 DEBUG = True
