@@ -2,7 +2,7 @@
 import os.path
 import dj_database_url
 
-DEBUG = False 
+DEBUG = True 
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
 
@@ -162,3 +162,6 @@ AUTHENTICATION_BACKENDS = ('users.backends.CaseInsensitiveModelBackend',
 SERIALIZATION_MODULES = {
   'json': 'wadofstuff.django.serializers.json'
 }
+if (DEBUG):
+  from settings_dev import *
+

@@ -26,16 +26,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('userdata', ['Notification'])
 
-        # Adding model 'Download'
-        db.create_table('userdata_download', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.Profile'])),
-            ('album', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Album'])),
-            ('song', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Song'])),
-            ('time', self.gf('django.db.models.fields.DateTimeField')()),
-        ))
-        db.send_create_signal('userdata', ['Download'])
-
 
     def backwards(self, orm):
         # Deleting model 'Subscription'
@@ -44,15 +34,12 @@ class Migration(SchemaMigration):
         # Deleting model 'Notification'
         db.delete_table('userdata_notification')
 
-        # Deleting model 'Download'
-        db.delete_table('userdata_download')
-
 
     models = {
         'artists.album': {
             'Meta': {'object_name': 'Album'},
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
-            'cover': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'cover': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'release_date': ('django.db.models.fields.DateField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -64,14 +51,6 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
             'profile': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['users.Profile']", 'unique': 'True'})
-        },
-        'artists.song': {
-            'Meta': {'object_name': 'Song'},
-            'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Album']"}),
-            'download_link': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'track_num': ('django.db.models.fields.IntegerField', [], {})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -108,14 +87,6 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'userdata.download': {
-            'Meta': {'object_name': 'Download'},
-            'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Album']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'profile': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['users.Profile']"}),
-            'song': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Song']"}),
-            'time': ('django.db.models.fields.DateTimeField', [], {})
         },
         'userdata.notification': {
             'Meta': {'object_name': 'Notification'},

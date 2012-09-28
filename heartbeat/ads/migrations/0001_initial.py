@@ -88,7 +88,7 @@ class Migration(SchemaMigration):
         'artists.album': {
             'Meta': {'object_name': 'Album'},
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
-            'cover': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'cover': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'release_date': ('django.db.models.fields.DateField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

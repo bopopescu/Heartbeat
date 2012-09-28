@@ -17,12 +17,20 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('artists', ['Artist'])
 
+        # Adding model 'ArtistImage'
+        db.create_table('artists_artistimage', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Artist'])),
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
+        ))
+        db.send_create_signal('artists', ['ArtistImage'])
+
         # Adding model 'Album'
         db.create_table('artists_album', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Artist'])),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('cover', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            ('cover', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
             ('release_date', self.gf('django.db.models.fields.DateField')()),
             ('to_zip', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
@@ -47,48 +55,13 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('artists', ['AdsPreferences'])
 
-        # Adding model 'Impression'
-        db.create_table('artists_impression', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Artist'])),
-            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.Profile'])),
-            ('page', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal('artists', ['Impression'])
-
-        # Adding model 'AdView'
-        db.create_table('artists_adview', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Artist'])),
-            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.Profile'])),
-            ('song', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Song'])),
-            ('time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('timeSpentWatching', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('finished', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('artists', ['AdView'])
-
-        # Adding model 'AdHistory'
-        db.create_table('artists_adhistory', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Artist'])),
-            ('year', self.gf('django.db.models.fields.IntegerField')()),
-            ('month', self.gf('django.db.models.fields.IntegerField')()),
-            ('clicks', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('watches', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('impressions', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('closed', self.gf('django.db.models.fields.IntegerField')(default=0)),
-        ))
-        db.send_create_signal('artists', ['AdHistory'])
-
         # Adding model 'Tour'
         db.create_table('artists_tour', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('artist', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Artist'])),
             ('album', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Album'], blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=150)),
-            ('icon', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            ('icon', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
         ))
         db.send_create_signal('artists', ['Tour'])
 
@@ -102,16 +75,29 @@ class Migration(SchemaMigration):
             ('city', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('state', self.gf('django.db.models.fields.CharField')(max_length=3)),
             ('country', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('icon', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            ('icon', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
             ('date', self.gf('django.db.models.fields.DateField')()),
             ('time', self.gf('django.db.models.fields.TimeField')()),
         ))
         db.send_create_signal('artists', ['Concert'])
 
+        # Adding model 'Download'
+        db.create_table('artists_download', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.Profile'])),
+            ('album', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Album'])),
+            ('song', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['artists.Song'])),
+            ('time', self.gf('django.db.models.fields.DateTimeField')()),
+        ))
+        db.send_create_signal('artists', ['Download'])
+
 
     def backwards(self, orm):
         # Deleting model 'Artist'
         db.delete_table('artists_artist')
+
+        # Deleting model 'ArtistImage'
+        db.delete_table('artists_artistimage')
 
         # Deleting model 'Album'
         db.delete_table('artists_album')
@@ -122,34 +108,17 @@ class Migration(SchemaMigration):
         # Deleting model 'AdsPreferences'
         db.delete_table('artists_adspreferences')
 
-        # Deleting model 'Impression'
-        db.delete_table('artists_impression')
-
-        # Deleting model 'AdView'
-        db.delete_table('artists_adview')
-
-        # Deleting model 'AdHistory'
-        db.delete_table('artists_adhistory')
-
         # Deleting model 'Tour'
         db.delete_table('artists_tour')
 
         # Deleting model 'Concert'
         db.delete_table('artists_concert')
 
+        # Deleting model 'Download'
+        db.delete_table('artists_download')
+
 
     models = {
-        'artists.adhistory': {
-            'Meta': {'object_name': 'AdHistory'},
-            'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
-            'clicks': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'closed': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'impressions': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'month': ('django.db.models.fields.IntegerField', [], {}),
-            'watches': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'year': ('django.db.models.fields.IntegerField', [], {})
-        },
         'artists.adspreferences': {
             'Meta': {'object_name': 'AdsPreferences'},
             'artist': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['artists.Artist']", 'unique': 'True'}),
@@ -157,20 +126,10 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'video_download': ('django.db.models.fields.IntegerField', [], {'default': '0'})
         },
-        'artists.adview': {
-            'Meta': {'object_name': 'AdView'},
-            'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
-            'finished': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'profile': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['users.Profile']"}),
-            'song': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Song']"}),
-            'time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'timeSpentWatching': ('django.db.models.fields.PositiveIntegerField', [], {})
-        },
         'artists.album': {
             'Meta': {'object_name': 'Album'},
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
-            'cover': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'cover': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'release_date': ('django.db.models.fields.DateField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -183,6 +142,12 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
             'profile': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['users.Profile']", 'unique': 'True'})
         },
+        'artists.artistimage': {
+            'Meta': {'object_name': 'ArtistImage'},
+            'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'})
+        },
         'artists.concert': {
             'Meta': {'object_name': 'Concert'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -190,20 +155,20 @@ class Migration(SchemaMigration):
             'city': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'country': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'date': ('django.db.models.fields.DateField', [], {}),
-            'icon': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'icon': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
             'time': ('django.db.models.fields.TimeField', [], {}),
             'tour': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Tour']"}),
             'venue': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'artists.impression': {
-            'Meta': {'object_name': 'Impression'},
-            'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
+        'artists.download': {
+            'Meta': {'object_name': 'Download'},
+            'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Album']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'page': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'profile': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['users.Profile']"}),
-            'time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
+            'song': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Song']"}),
+            'time': ('django.db.models.fields.DateTimeField', [], {})
         },
         'artists.song': {
             'Meta': {'object_name': 'Song'},
@@ -217,7 +182,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Tour'},
             'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Album']", 'blank': 'True'}),
             'artist': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['artists.Artist']"}),
-            'icon': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'icon': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '150'})
         },
