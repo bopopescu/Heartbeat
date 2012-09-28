@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from artists.models import Artist, Album, Song
-
 NO = 0
 YES = 1
 
