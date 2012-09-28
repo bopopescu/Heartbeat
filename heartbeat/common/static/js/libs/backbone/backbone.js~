@@ -1,3 +1,0 @@
-define(['libs/backbone/backbone-min'], function(){
-    return Backbone;
-});

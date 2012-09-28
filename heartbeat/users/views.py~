@@ -1,5 +1,0 @@
-from decorators import ajax_required
-
-@ajax_required
-def base(request):
-    pass
