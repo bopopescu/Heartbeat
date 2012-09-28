@@ -6,11 +6,7 @@ from django.forms.models import model_to_dict
 
 from os.path import splitext
 
-# from users.models import Download
-import json
-import re
 import paths
-import pdb
 
 YES=1
 NO=0
@@ -28,9 +24,12 @@ class Artist(models.Model):
     profile = models.OneToOneField('users.Profile', editable=False)
     name = models.CharField(max_length=50, unique=True)
     bio = models.TextField(blank=True)
-
     def __unicode__(self):
         return unicode(self.name)
+
+class ArtistImage(models.Model):
+    artist = models.ForeignKey(Artist)
+    image = models.ImageField(upload_to=paths.artist_icon_name)
 
 class Album(models.Model):
     """An album
@@ -41,7 +40,7 @@ class Album(models.Model):
     """
     artist = models.ForeignKey(Artist)
     title = models.CharField(max_length=100)
-    cover = models.FileField(upload_to=paths.album_cover_name)
+    cover = models.ImageField(upload_to=paths.album_cover_name)
     release_date = models.DateField()
     to_zip = models.BooleanField(default=False) # whether we need to zip it
     def __unicode__(self):
@@ -99,56 +98,6 @@ class AdsPreferences(models.Model):
     video_download = models.IntegerField(default=0, choices=WATCH_AD)
     banner_ad_count = models.IntegerField(default=0, choices=BANNER_ADS)
 
-class Impression(models.Model):
-    """An ad Impression
-    Stores the profile that watched the ad and the artist they watched if for.
-    Also keeps track of the page that the impression was on so artists can
-    see which pages are hot.
-
-    """
-    artist = models.ForeignKey(Artist)
-    profile = models.ForeignKey('users.Profile')
-    page = models.CharField(max_length=100)
-    time = models.DateTimeField(auto_now_add=True)
-
-    
-class AdView(models.Model):
-    """An Ad Video Watch
-    Stores information about the user that watched a video ad before downloading
-    an ad. Also keeps track of whether the ad video dissuaded them from downloading
-    
-    """
-    artist = models.ForeignKey(Artist)
-    profile = models.ForeignKey('users.Profile')
-    song = models.ForeignKey(Song)
-    time = models.DateTimeField(auto_now_add=True)
-    timeSpentWatching = models.PositiveIntegerField()
-    finished = models.BooleanField()
-
-class AdHistory(models.Model):
-    """One artists ad history
-    Ad history is a on a per day basis. 
-
-    """
-    def valid_year(value):
-        if value < 2000 or value > 3000:
-            raise ValidationError(u'%s is not a valid year ' % value)
-    def valid_month(month):
-        if month < 1 or month > 12:
-            raise ValidationError(u'%s is not a valid month ' % day)
-    artist = models.ForeignKey(Artist)
-    year = models.IntegerField(validators=[valid_year])
-    month = models.IntegerField(validators=[valid_month])
-    clicks = models.PositiveIntegerField()
-    watches = models.PositiveIntegerField()
-    impressions = models.PositiveIntegerField()
-    CLOSED = (
-        (NO, 'No'),
-        (YES, 'Yes'),
-        )
-    
-    closed = models.IntegerField(default=0, choices = CLOSED)
-
 class Tour(models.Model):
     """An Artist's tour
     A tour. I can optionally be associated with an album
@@ -157,7 +106,7 @@ class Tour(models.Model):
     artist = models.ForeignKey(Artist)
     album = models.ForeignKey(Album, blank=True)
     title = models.CharField(max_length=150)
-    icon = models.FileField(upload_to=paths.tour_icon_name)
+    icon = models.ImageField(upload_to=paths.tour_icon_name)
     def __unicode__(self):
         return unicode(self.title)
 
@@ -174,8 +123,23 @@ class Concert(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=3)
     country = models.CharField(max_length=50)
-    icon = models.FileField(upload_to=paths.concert_icon_name)
+    icon = models.ImageField(upload_to=paths.concert_icon_name)
     date = models.DateField()
     time = models.TimeField()
     def __unicode__(self):
         return self.venue
+
+class Download(models.Model):
+    """A download
+    Users can download songs or albums, one of these will be set,
+    the other should not be set. Time is the time of the download.
+    
+    """
+    profile = models.ForeignKey('users.Profile')
+    album = models.ForeignKey(Album)
+    song = models.ForeignKey(Song)
+    time = models.DateTimeField('date downloaded')
+
+    def __unicode__(self):
+        return unicode(self.profile) + " downloaded " \
+            + (unicode(self.album) if (self.album) else unicode(self.song)) + " on " + unicode(self.time)

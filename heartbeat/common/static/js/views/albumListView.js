@@ -3,10 +3,12 @@ define([
     'backbone',
     'underscore',
     'album',
+    'util',
+    'views/album',
     'text!templates/albumBox.html',
     'text!templates/album_details.html',
     'timeago',
-], function($, Backbone, _, Album, albumBoxTemplate, albumTemplate) {
+], function($, Backbone, _, Album, util, AlbumView, albumBoxTemplate, albumTemplate) {
     AlbumListView = Backbone.View.extend({
         template: undefined,
         el: $("#album_list"),
@@ -20,26 +22,26 @@ define([
             this.collection.bind("reset", this.render);
             this.collection.bind("add", this.addAlbum);
         },
-        handleClick: function(event) {
-          event.preventDefault();
-          if ($(event.target).attr('href') !== undefined) {
-            Backbone.history.navigate($(event.target).attr("href"), { trigger: true })
-          }
-        },
+        handleClick: util.handleClick,
         addAlbum: function(album) {
-          var template = albumTemplate;
-          if (this.options.template) {
-            template = this.options.template;
-          }
-          $(this.el).append(_.template(template, album.toJSON()));
+          $(this.el).append(new AlbumView({ model: album, template: this.options.template }))
           $("time").timeago();
         },
         render: function() {
             $(this.el).empty();
             $(this.el).append(_.template(albumBoxTemplate, {}));
             var that = this;
+            var template = "";
+            if (this.options.hasOwnProperty('template')) {
+                template = this.options.template;
+            } else {
+                template = albumTemplate;
+            }
+            var albums = $(that.el).find("dl");
             this.collection.each(function(album) {
-              that.addAlbum(album);
+                var tmp = new AlbumView({ model: album, template: template });
+                tmp.render();
+                albums.append(tmp.$el);
             });
         },
     });

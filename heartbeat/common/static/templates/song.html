@@ -1,0 +1,12 @@
+<td><%= name %></td>
+<td>
+    <%= is_playing %> 
+    <i 
+        id=<%= id %> 
+        class="<% if (is_playing) { %> 
+            icon-pause play 
+        <% } else { %> 
+            icon-play play 
+            <% } %>"></i>
+    </td>
+<td><i class="icon-download-alt"></i></td>

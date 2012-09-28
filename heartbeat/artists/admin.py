@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.forms import ModelForm
 
-from models import Artist, Album, Song, Concert, Tour
+from models import Artist, Album, Song, Concert, Tour, ArtistImage
 
 class SongInline(admin.TabularInline):
     model = Song
@@ -14,8 +14,12 @@ class AlbumInline(admin.TabularInline):
     model = Album
     extra = 1
 
+class ArtistImageInline(admin.TabularInline):
+    model = ArtistImage
+    extra = 2
+
 class ArtistAdmin(admin.ModelAdmin):
-    inlines = [AlbumInline]
+    inlines = [AlbumInline, ArtistImageInline]
 
 class ConcertInline(admin.TabularInline):
     model = Concert
@@ -24,6 +28,6 @@ class ConcertInline(admin.TabularInline):
 class TourAdmin(admin.ModelAdmin):
     inlines = [ConcertInline]
     
-admin.site.register(Artist)
+admin.site.register(Artist, ArtistAdmin)
 admin.site.register(Album, AlbumAdmin)
 admin.site.register(Tour, TourAdmin)

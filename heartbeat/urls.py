@@ -5,7 +5,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from tastypie.api import Api
 
-from artists.api import ArtistResource, AlbumResource, SongResource
+from artists.api import ArtistResource, ArtistDetailsResource, HotAlbumResource, AlbumResource, SongResource
 from users.api import UserResource, CreateProfileResource, ProfileResource
 
 admin.autodiscover()
@@ -16,8 +16,10 @@ users_api.register(ProfileResource())
 users_api.register(CreateProfileResource())
 
 users_api.register(ArtistResource())
+users_api.register(ArtistDetailsResource())
 users_api.register(AlbumResource())
 users_api.register(SongResource())
+users_api.register(HotAlbumResource())
 
 urlpatterns = patterns(
     '',
@@ -35,7 +37,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 )
 urlpatterns += patterns('',
-    url(r'^media/P(<path>.*)$', 'django.views.static.serve', {
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
       'document_root': settings.MEDIA_ROOT,
       }),
     )

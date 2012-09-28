@@ -35,6 +35,7 @@ define([
               'open': this.open,
               'error': this.model.get('error'),
               'username': (this.model.get('username') == null) ? "" : this.model.get('username'),
+              'artist_id': this.model.get("artist_id"),
               'csrf_token': this.model.get('csrf_token')
             });
             $(this.el).html(template);

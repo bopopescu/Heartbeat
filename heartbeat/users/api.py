@@ -5,7 +5,7 @@ from django.conf.urls.defaults import url
 from django.db import IntegrityError
 
 from forms import UserForm, ProfileForm
-from models import Profile, Subscription, Notification, Download
+from models import Profile
 
 from tastypie import fields
 from tastypie.authentication import Authentication

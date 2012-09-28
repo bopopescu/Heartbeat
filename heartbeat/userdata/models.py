@@ -13,7 +13,7 @@ class Subscription(models.Model):
     based on their preferences.
     
     """
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey('users.Profile')
     artist = models.ForeignKey(Artist)
     AUTO_GENERATED = (
         (NO, 'no'),
@@ -30,7 +30,7 @@ class Notification(models.Model):
     and received this notification of a new album or something of the sort.
 
     """
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey('users.Profile')
     album = models.ForeignKey(Album)
     READ_CHOICES = (
         (NO, 'no'),
@@ -44,17 +44,3 @@ class Notification(models.Model):
         self.read == NO
         
 
-class Download(models.Model):
-    """A download
-    Users can download songs or albums, one of these will be set,
-    the other should not be set. Time is the time of the download.
-    
-    """
-    profile = models.ForeignKey(Profile)
-    album = models.ForeignKey(Album)
-    song = models.ForeignKey(Song)
-    time = models.DateTimeField('date downloaded')
-
-    def __unicode__(self):
-        return unicode(self.profile) + " downloaded " \
-            + (unicode(self.album) if (self.album) else unicode(self.song)) + " on " + unicode(self.time)

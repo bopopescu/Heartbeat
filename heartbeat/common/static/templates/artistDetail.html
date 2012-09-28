@@ -1,1 +1,11 @@
-<h1><%= name %></h1>
+<div id="gallery" class="gallery pull-left">
+    <ul class="galleryBar">
+        <li><a href="<%= images[0].image %>"><img class="img-rounded" src="<%= images[0].image %>" /></a></li>
+        <li><a href="<%= images[1].image %>"><img class="img-rounded" src="<%= images[1].image %>" /></a></li>
+    </ul>
+</div>
+<div class="hero-unit">
+    <h1><%= name %></h1>
+    <p><%= bio %></p>
+    <button class="btn btn-primary">Donate</button> 
+</div>

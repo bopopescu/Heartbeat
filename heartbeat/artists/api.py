@@ -1,24 +1,44 @@
 from django.conf.urls.defaults import url 
 from django.core import serializers
 
-from models import Artist, Album, Song
+from models import Artist, ArtistImage, Album, Song
 
 from tastypie import fields
 from tastypie.resources import Resource, ModelResource
 from tastypie.utils import trailing_slash
 
+import os
 import pdb
 
-class ArtistResource(ModelResource):
+class ArtistDetailsResource(ModelResource):
     """A resource for artists
     Allows for retrieving artist information,
     especially top artists for a particular user
 
     """
     albums = fields.ToManyField('artists.api.AlbumResource', 'album_set', full=True)
+    images = fields.ToManyField('artists.api.ArtistImageResource', 'artistimage_set', full=True)
     class Meta:
+        resource_name = 'artist_details'
         queryset = Artist.objects.all()
         include_resource_uri = False
+        allowed_methods = ['get']
+
+class ArtistResource(ModelResource):
+    class Meta:
+        resource_name = 'artist'
+        queryset = Artist.objects.all()
+        include_resource_uri = False
+        allowed_methods = ['get']
+
+class HotAlbumResource(ModelResource):
+    artist = fields.ForeignKey(ArtistResource, 'artist', full = True)
+    songs = fields.ToManyField('artists.api.SongResource', 'song_set', full=True)
+    class Meta:
+        queryset = Album.get_top_albums()
+        resource_name = 'hot_albums'
+        allowed_methods = ['get']
+        resource_name = 'hot_albums'
 
 class AlbumResource(ModelResource):
     """A resource for albums
@@ -28,6 +48,7 @@ class AlbumResource(ModelResource):
     
     """
     artist = fields.ForeignKey(ArtistResource, 'artist')
+    songs = fields.ToManyField('artists.api.SongResource', 'song_set', full=True)
     class Meta:
         queryset = Album.objects.all()
         resource_name = "album"
@@ -35,17 +56,6 @@ class AlbumResource(ModelResource):
           "artist": ('exact',),
         }
         
-    def override_urls(self):
-        return [
-            url(r"^(?P<resource_name>%s)/hot%s$" % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view("hot"), name="api_hot"),
-            ]
-
-    def hot(self, request, **kwargs):
-        return self.create_response(request, {
-                'albums': serializers.serialize("json", Album.get_top_albums(), 
-                                                extras=('songs',), relations=('artist',))
-                })
 class SongResource(ModelResource):
   """A resource for songs
   Can retrieve individual songs or albums of songs, used to sync
@@ -55,3 +65,8 @@ class SongResource(ModelResource):
   class Meta:
     queryset = Song.objects.all()
     resource_name = "song"
+
+class ArtistImageResource(ModelResource):
+    class Meta:
+        queryset = ArtistImage.objects.all()
+        resource_name = "artist_image"

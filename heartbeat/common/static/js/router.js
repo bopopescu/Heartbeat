@@ -11,8 +11,10 @@ define([
     'views/registerUser',
     'views/albumListView',
     'views/artistDetail',
+    'views/playerView',
+    'jquery.jplayer',
 ], function($, _, Backbone, Loader, User, Albums, Artist, LoginBox, LoginView, RegisterUser,
-           AlbumListView, ArtistDetailView) {
+           AlbumListView, ArtistDetailView, PlayerView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             'users/login/': 'showLogin',
@@ -35,11 +37,17 @@ define([
         },
         showArtists: function(){
             $("#content").html("<div id='album_list'></div>");
-            var hotAlbums = new Albums();
+            var hotAlbums = new Albums([], { 'url': '/api/users/hot_albums/' });
             this.albumListView = new AlbumListView({ 'el': $("#album_list"),
                                                    'collection' : hotAlbums,
             });
-            hotAlbums.fetchHotAlbums();
+            hotAlbums.fetch({
+                success: function(a, b, c) {
+                    console.log(a);                  
+                    console.log(b);                  
+                    console.log(c);                  
+                          }
+            });
             this.albumListView.render();
         },
         register: function() {
@@ -55,15 +63,15 @@ define([
           require([ 'text!templates/album.html' ], function(albumTemplate) {
             $("#content").html("<div id='artist_detail'></div><div id='album_list'></div>");
             var albums = new Albums([], {url: '/api/users/album/?artist=' + id });
-            var artist = new Artist({ 'pk': id });
+            var artist = new Artist({ 'url': '/api/users/artist_details/' + id + '/' });
             this.artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
                                              'model': artist,
             });
-            var albumListView = new AlbumListView({ 'el': $("#album_list"),
+            /*var albumListView = new AlbumListView({ 'el': $("#album_list"),
               'collection': albums,
               'template': albumTemplate,
-            });
-            albums.fetch();
+            });*/
+            //albums.fetch();
             artist.fetch();
           });
         },
@@ -73,10 +81,11 @@ define([
     });
 
     var initialize = function(){
+        var player = PlayerView;
         var app_router = new AppRouter;
         //app_router.bind("refresh", refresh);
         app_router.user = new User();
-        this.loginBox = new LoginBox({ 'model': app_router.user });
+        this.loginBox = new LoginBox({ el: $("#nav2.nav"), 'model': app_router.user });
         Backbone.history.start({ 'pushState': true });
         //refresh(app_router.user);
     };

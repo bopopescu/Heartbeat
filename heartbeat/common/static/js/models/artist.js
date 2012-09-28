@@ -11,32 +11,20 @@ define([
       name: "",
     },
     initialize: function(options) {
+        if (options != void 0
+            && options.url != void 0) {
+            this.url = options.url;
+        }
     },
     url: function() {
       return "/api/users/artist/" + this.get("pk") + "/";
     },
-/*    parse: function(response) {
-      var albums = response['albums'];
-      var newalbums = this.get("albums");
-      var artist = {
-        'name': response['name'],
-        'bio': response['bio'],
-        'pk': response['id'],
-      }
-      for (var i = 0; i < albums.length; i++) {
-        newalbums.add(new Album({
-          'artist': artist,
-          'cover': albums[i].cover,
-          'pk': albums[i].id,
-          'release_date': albums[i].release_date,
-          'title': albums[i].title,
-        }));
-      }
-      this.set({'albums': newalbums });
-      delete response['albums'];
-      return response;
+    parse: function(response) {
+        var albums = new Albums();
+        albums.reset(response['albums']);
+        response['albums'] = albums;
+        return response;
     },
-    */
   });
   return Artist;
 });

@@ -11,12 +11,15 @@ require.config({
         'timeSelect': 'libs/timeselect/ptTimeSelect',
         'jquery.overlay': 'libs/overlay/jquery.overlay.min',
         'timeago': 'libs/timeago/timeago',
+        'gallery': 'libs/gallery/jquery.gallery.0.3.min',
+        'jquery.jplayer': 'libs/jPlayer/jquery.jplayer.min',
         'user': 'models/user',
         'song': 'models/song',
         'songs': 'models/songs',
         'album': 'models/album',
         'albums': 'models/albums',
         'artist': 'models/artist',
+        'player': 'models/queue',
         'loginBox': 'views/loginBox',
     },
     shim: {
@@ -47,6 +50,7 @@ require.config({
         'bootstrap': ['jquery'],
         'bootstrapDropdown': ['jquery'],
         'timeago': ['jquery'],
+        'gallery': ['jquery'],
     },
 });
 

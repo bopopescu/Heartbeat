@@ -7,10 +7,10 @@ define([
         defaults: {
             username: "",
             loggedin: false,
-            isArtist: false,
+            is_rtist: false,
             error: "",
-	          api_key: "",
-            artistId: -1,
+	        api_key: "",
+            artist_id: -1,
             csrf_token: ""
         },
         initialize: function() {
@@ -43,7 +43,7 @@ define([
             return false;
           }
           var username = response['username'];
-          var artistId = parseInt(response['artistId']);
+          var artistId = parseInt(response['artist_id']);
 	        if (undefined != response['api_key']
 		          || void 0 != response['api_key']) {
 	          this.set({ "api_key": response['api_key'] });
@@ -59,8 +59,8 @@ define([
           var isArtist = (artistId > 0)
             this.set({ 
               username: username,
-              artistId: artistId,
-              isArtist: isArtist,
+              artist_id: artistId,
+              is_artist: isArtist,
               loggedin: true,
           });
           this.trigger("login");

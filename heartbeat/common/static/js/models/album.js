@@ -10,34 +10,33 @@ define([
         songs: [],
       },
       initialize: function(options) {
-        this.songs = [];
+        if (options && options.hasOwnProperty("songs") && options.songs instanceof Array) {
+            var songs = options.songs;
+            var newsongs = [];
+            for (var i = 0; i < songs.length; i++) {
+                var song;
+                if (songs[i] instanceof Backbone.Model) {
+                    song = songs[i];
+                } else {
+                    song = new Song(songs[i]);
+                }
+                song.set({ "artist": this.get("artist").name, 
+                    "artist_id": this.get("artist").id,
+                    "album_id": this.get("id") }); 
+                newsongs.push(song);
+            }
+            this.set({ songs: newsongs });
+        }
       },
-    },
-    {
-      fromJSON: function(album) {
-        var songs = album.extras.songs;
-        songs = $.parseJSON(songs);
-        //songsCollection = Songs();
-        var artist = {
-          'name': album.fields.artist.fields.name,
-          'bio': album.fields.artist.fields.bio,
-          'id': album.fields.artist.pk,
-        }
-        var songsCollection = [];
-        var newalbum = new Album();
+      parse: function(response) {
+        console.log(response);
+        var songs = response.songs;
+        var newsongs = [];
         for (var i = 0; i < songs.length; i++) {
-          var song = Song.fromJSON(songs[i], newalbum); 
-          songsCollection.push(song);
+           newsongs.push(new Song(songs[i])); 
         }
-        newalbum.set({
-          title: album.fields.title,
-          songs: songsCollection,
-          cover: album.fields.cover,
-          release_date: album.fields.release_date,
-          artist: artist,
-          id: album.pk,
-        });
-        return newalbum;
+        response['songs'] = newsongs;
+        return response; 
       },
     });
     return Album;

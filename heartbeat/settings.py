@@ -1,5 +1,4 @@
 # Django settings for heartbeat project.
-import dj_database_url
 import os.path
 
 DEBUG = True
@@ -13,15 +12,14 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://localhost')
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#        'NAME': 'heartbeat',                      # Or path to database file if using sqlite3.
-#        'USER': 'heartbeat',                      # Not used with sqlite3.
-#        'PASSWORD': 'HliElyA19R29T',                  # Not used with sqlite3.
-#        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-#        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-#    }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'heartbeat',                      # Or path to database file if using sqlite3.
+        'USER': 'heartbeat',                      # Not used with sqlite3.
+        'PASSWORD': 'HliElyA19R29T',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
 }
 
 # Local time zone for this installation. Choices can be found here:
@@ -58,7 +56,7 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, "media")
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 #MEDIA_URL = '/media/'
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -129,7 +127,9 @@ INSTALLED_APPS = (
     'tastypie',
     'south',
     'users',
-    'artists'
+    'artists',
+    'userdata',
+    'ads',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

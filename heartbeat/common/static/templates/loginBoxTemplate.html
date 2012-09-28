@@ -1,6 +1,6 @@
 <li <% if (username == "") { %> style="display:none" <% } %> 
     id="username">
-  <a id="username_value">
+    <a href="/artists/<%= artist_id %>/" id="username_value">
     <% if (username != "") { %> <%= username %> <% } %>
   </a>
 </li>
@@ -27,3 +27,5 @@
 <li <% if (username != "") { %> style="display:none" <% } %> id="register">
   <a href="/register/" style="cursor:pointer">register</a>
 </li>
+<% if (artist_id > 0) { %> <li id="admin"> <a href="/artists/<%= artist_id %>/admin/">admin</a></li> 
+<% } %>

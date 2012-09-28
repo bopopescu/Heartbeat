@@ -13,7 +13,6 @@ def base(request):
   return HttpResponse("<div id='login_form'></div>")
 
 def register(request):
-  pdb.set_trace()
   if request.method == "POST":
     data = json.loads(request.raw_post_data)
     uForm = UserForm(data = data)

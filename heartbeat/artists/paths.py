@@ -10,14 +10,14 @@ def zip_file_name(album):
                      unicode(album.title), 
                      ".zip"])
 
-def artist_icon_name(artist, filename):
+def artist_icon_name(artist_image, filename):
     return '/'.join([
                      "artists", 
-                     unicode(artist.name), 
+                     unicode(artist_image.artist.name), 
                      'icons', 
                      unicode(filename)])
 def album_cover_name(instance, filename):
-  return '/'.join(['static',
+  return '/'.join([
                     "artists", 
                      unicode(instance.artist.name), 
                      'albums', 
