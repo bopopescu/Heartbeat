@@ -8,4 +8,7 @@
     <h1><%= name %></h1>
     <p><%= bio %></p>
     <button class="btn btn-primary">Donate</button> 
+    <% if (is_self) { %>
+    <button class="btn btn-primary">Admin</button>
+    <% } %>
 </div>

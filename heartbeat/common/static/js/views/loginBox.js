@@ -5,15 +5,16 @@ define([
     'underscore',
     'loader',
     'text!templates/loginBoxTemplate.html',
+    'util',
     'bootstrapDropdown',
     'jquery.forms',
-], function ($, Backbone,  User, _, Loader, loginBoxTemplate) {
+], function ($, Backbone,  User, _, Loader, loginBoxTemplate, util) {
     LoginBox = Backbone.View.extend({
         el: $("#login_box"),
         defaults: {
-            content: $("#content"),
             open: false,
         },
+        handleclick: util.handleClick,
         initialize: function(options) {
             _.defaults(this.options, this.defaults);
             _.bindAll(this, 'render', 'toggle', 'logout');
@@ -25,20 +26,29 @@ define([
             "click #logout": "logout",
             "click #username": "loadUserPage",
             "click #register": "register",
-            "click #username_login.dropdown-toggle": "toggle",
+            "click #admin": "handleclick",
+            //"click #username_login.dropdown-toggle": "toggle",
         },
         toggle: function(event) {
-          this.open = true;
+          this.open = !this.open;
+          this.render();
         },
         render: function(error) {
             var template = _.template( loginBoxTemplate, {
-              'open': this.open,
+              //'open': this.open,
               'error': this.model.get('error'),
               'username': (this.model.get('username') == null) ? "" : this.model.get('username'),
               'artist_id': this.model.get("artist_id"),
               'csrf_token': this.model.get('csrf_token')
             });
             $(this.el).html(template);
+            $("#username_login").dropdown();
+             
+            /*if (this.open) {
+              $("#login").addClass("open");
+            } else {
+              $("#login").removeClass("open");
+            }*/
             var user = this.model;
             $(this.el).find("form").ajaxForm({
                 success: user.logIn,
@@ -55,11 +65,7 @@ define([
         },
         logout: function() {
             this.model.logOut();
-            // Check to see if we have to redirect the user
             Backbone.history.navigate(document.location['pathname']);
-            /*Loader.load(document.location['pathname'], function(resp, b, c, newurl) {
-                Backbone.history.navigate(newurl, {trigger: true});
-            });*/
         },
         register: function() {
             Backbone.history.navigate("/users/register/", { trigger: true });

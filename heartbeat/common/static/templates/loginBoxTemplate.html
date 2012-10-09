@@ -1,12 +1,17 @@
-<li <% if (username == "") { %> style="display:none" <% } %> 
-    id="username">
-    <a href="/artists/<%= artist_id %>/" id="username_value">
-    <% if (username != "") { %> <%= username %> <% } %>
+<% if (username != "") { %>
+  <li id="username">
+    
+  <a <% if (artist_id > 0) { %> href="/artists/<%= artist_id %>/"<% } %> id="username_value">
+      <% if (username != "") { %> <%= username %> <% } %>
+    </a>
+  </li>
+<% } %>
+<% if (username == "") { %>
+<li class="dropdown" id="login">
+  <a class="dropdown-toggle" id="username_login" style="cursor:pointer" data-toggle='dropdown'>
+    login
+    <b class="caret"></b>
   </a>
-</li>
-<li <% if (username != "") { %> style="display:none" <% } %> class="dropdown<% if (open) { %> open<% } %>" id="login">
-  <a id="username_login" class="dropdown-toggle" data-toggle="dropdown" style="cursor:pointer" >login</a>
-  <!-- <b class="caret"></b> -->
   <ul class="dropdown-menu" id="dropdown-menu">
     <form name="login" method="POST" action="/api/users/profile/login/">
       <div style="display:none">
@@ -21,11 +26,17 @@
     </form>
   </ul>
 </li>
-<li <% if (username == "") { %> style="display:none" <% } %> id="logout">
-  <a>logout</a>
-</li>
-<li <% if (username != "") { %> style="display:none" <% } %> id="register">
+<% } %>
+<% if (username != "") { %>
+  <li id="logout">
+    <a>logout</a>
+  </li>
+<% } %>
+<% if (username == "") { %>
+<li id="register">
   <a href="/register/" style="cursor:pointer">register</a>
 </li>
+<% } %>
+
 <% if (artist_id > 0) { %> <li id="admin"> <a href="/artists/<%= artist_id %>/admin/">admin</a></li> 
 <% } %>

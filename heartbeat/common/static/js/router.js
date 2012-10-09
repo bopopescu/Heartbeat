@@ -12,9 +12,10 @@ define([
     'views/albumListView',
     'views/artistDetail',
     'views/playerView',
+    'views/artistAdmin',
     'jquery.jplayer',
 ], function($, _, Backbone, Loader, User, Albums, Artist, LoginBox, LoginView, RegisterUser,
-           AlbumListView, ArtistDetailView, PlayerView) {
+           AlbumListView, ArtistDetailView, PlayerView, ArtistAdmin) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             'users/login/': 'showLogin',
@@ -22,6 +23,7 @@ define([
             '': 'showArtists',
             'artists/': 'showArtists',
             'artists/:id/': 'artistDetails',
+            'artists/:id/admin': 'adminArtist',
             "*actions": 'defaultAction'
         },
         showLogin: function(){
@@ -55,25 +57,37 @@ define([
               Backbone.history.navigate("/", { trigger: true });
               return;
             }
-            $("#content").append("<div id='register_form'></div>");
+            $("#content").html("<div id='register_form'></div>");
             this.registerView = new RegisterUser({ 'el': $("#register_form"),
                                                    'model': this.user });
         },
         artistDetails: function(id) {
+          var that = this;
           require([ 'text!templates/album.html' ], function(albumTemplate) {
             $("#content").html("<div id='artist_detail'></div><div id='album_list'></div>");
             var albums = new Albums([], {url: '/api/users/album/?artist=' + id });
-            var artist = new Artist({ 'url': '/api/users/artist_details/' + id + '/' });
+            var artist = new Artist({ 'is_self': that.user.artist_id() == id,
+              'url': '/api/users/artist_details/' + id + '/' });
             this.artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
                                              'model': artist,
             });
-            /*var albumListView = new AlbumListView({ 'el': $("#album_list"),
-              'collection': albums,
-              'template': albumTemplate,
-            });*/
-            //albums.fetch();
             artist.fetch();
           });
+        },
+        adminArtist: function(id) {
+          if (that.user.artist_id() != id) {
+            Backbone.history.navigate('/', { trggier: true });
+            return;
+          }
+          alert("admin artist");
+          var artist = new Artist({ 'is_self': true,
+            'url': '/api/users/artist_details/' + id + '/'
+          });
+          $("#content").html("<div id='admin_artist'></div>");
+          var adminView = new ArtistAdmin({ 'el': $("#admin_artist"),
+            'model': artist,
+          });
+          artist.fetch();
         },
         defaultAction: function() {
             alert(Backbone.history.fragment);

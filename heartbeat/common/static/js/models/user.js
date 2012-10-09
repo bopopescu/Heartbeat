@@ -7,14 +7,13 @@ define([
         defaults: {
             username: "",
             loggedin: false,
-            is_rtist: false,
+            is_artist: false,
             error: "",
-	        api_key: "",
             artist_id: -1,
             csrf_token: ""
         },
         initialize: function() {
-            _.bindAll(this, 'logIn', 'loggedIn');
+            _.bindAll(this, 'logIn', 'loggedIn', 'artist_id');
             var user = this;
             var username = this.get('username');
             var id = this.get('artistId');
@@ -43,15 +42,11 @@ define([
             return false;
           }
           var username = response['username'];
-          var artistId = parseInt(response['artist_id']);
+          var artistId = parseInt(response['artistid']);
 	        if (undefined != response['api_key']
 		          || void 0 != response['api_key']) {
 	          this.set({ "api_key": response['api_key'] });
 	        }
-          if (undefined != response['csrf_token']
-              || void 0 != response['csrf_token']) {
-            this.set({ "csrf_token": response['csrf_token'] });
-          }
           if (username == null) {
             this.trigger("error", "Illegal username, password combination");
             return false;
@@ -68,7 +63,7 @@ define([
         },
         logOut: function() {
             var data = "csrfmiddlewaretoken=" + this.get("csrf_token");
-	        data += "&username=" + this.get("username");
+            data += "&username=" + this.get("username");
             $.ajax({
                 type: "GET",
                 url: "/api/users/profile/logout",
@@ -81,9 +76,14 @@ define([
             this.set({
                 username: "",
                 loggedin: false,
-                isArtist: false
+                isArtist: false,
+                artist_id: -1,
+                error: "",
             });
             this.trigger("logout");
+        },
+        artist_id: function() {
+          return this.get('artist_id');
         },
         loggedIn: function() {
           var loggedIn = this.get("loggedin");

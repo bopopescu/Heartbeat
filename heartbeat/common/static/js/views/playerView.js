@@ -13,6 +13,7 @@ define([
             "click i.icon-play": "play_pause",
             "click i.icon-pause": "play_pause",
             "click i.icon-backward": "back",
+            "click i.icon-forward": "skip",
             "click i.icon-heart": "like",
             "click a": 'handleClick',
         },
@@ -20,15 +21,16 @@ define([
         initialize: function(options) {
           this.playing = undefined;
           this.$el = $("#nav1");
+          this.play_error = "";
           this.player = $("#player");
-          _.bindAll(this, 'ready', 'play', 'pause', 'setmedia', 'display_error', 'render', 'is_playing', 'play_song');
+          _.bindAll(this, 'ready', 'play', 'pause', 'setmedia', 'display_error', 'render', 'is_playing', 'play_song', 'get_next', 'play_now', 'play_next');
           var that = this;
           this.player.jPlayer({
             ready: this.ready,
             error: this.display_error,
-            play: function() { that.trigger("play"); that.render(); },
+            play: function() { console.log("PLAYING"); that.trigger("play"); that.render(); },
             pause: function() { that.trigger("pause"); that.render(); },
-            ended: function() { that.trigger("stop"); that.get_next(); },
+            ended: function() { that.trigger("stop"); that.play_next(); },
           });
           this.render();
         },
@@ -38,8 +40,11 @@ define([
             console.log($("#player"));
         },
         play_song: function(song) {
-          this.playing = song;
-          this.setmedia(song.get('download_link'));
+          this.playing = song.toJSON()
+          this.play_now()
+        },
+        play_now: function() {
+          this.setmedia(this.playing.download_link);
           this.play(0);
           this.trigger("render");
         },
@@ -60,9 +65,38 @@ define([
               this.play();
             }
         },
+        get_next: function(callback) {
+          var that = this;
+          var track_num = this.playing.track_num + 1;
+          var album_id = this.playing.album_id;
+          $.ajax({
+            url: "/api/users/song/next",
+            contentType: "application/json",
+            data: {
+              album: album_id,
+              track_num: track_num,
+            },
+            dataType: "json",
+            beforeSend: function(a,b,c) {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+            },
+            success: function(data, textStatus, xhr) {
+              callback(data.song);
+              console.log(data); 
+            },
+            error: function(xhr, textStatus, error) {
+
+            },
+          });
+        },
         back: function() {
             this.player.jPlayer("stop");
             this.player.jPlayer("play");
+        },
+        skip: function() {
+          this.play_next();
         },
         setmedia: function(link) {
             this.player.jPlayer("setMedia", { 
@@ -73,21 +107,27 @@ define([
             this.model.like();
         },
         ended: function() {
-            this.model.get_next();
+          this.play_next();
+        },
+        play_next: function() {
+          var that = this;
+          this.get_next(function(song) {
+            that.playing = song;
+            that.trigger("stop");
+            that.play_now();
+            that.update_playing_dom();
+          });
         },
         display_error: function(error) {
-            var play_pause = this.$el.find("#play-pause");
-            play_pause.tooltip({
-              title: "we can't seem to find that... let me fetch you a better song", 
-              placement: "bottom",
-              trigger: "manual",
-            })
-            play_pause.tooltip("show");
-            window.setTimeout( function() {
-              $("#play-pause").tooltip("hide"); 
+            console.log(error);
+            this.play_error = "can't find that song... let me find another";
+            this.render();
+            $("#play-pause").tooltip("show");
+            setTimeout(function() { 
+              $("#play-pause").tooltip("hide");
             }, 2000);
             this.trigger("error");
-            this.render();
+            this.play_next();
         },
         hide_error: function() {
           $("#play-pause").tooltip("destroy");
@@ -96,12 +136,21 @@ define([
             this.$el.html(_.template(playerTemplate, {
               'is_playing': this.is_playing(),
               'playing': this.playing,
+              'play_error': "",
             }));
             $(".icon-heart").tooltip({
                 title: "we'll play more like this",
                 placement: "bottom",
             });
+            $("#play-pause").tooltip({
+              "title": this.play_error,
+              "trigger": "manual",
+              "placement": "bottom",
+            });
             this.trigger("render");
+        },
+        update_playing_dom: function() {
+
         },
     });
     var player = new PlayerView();

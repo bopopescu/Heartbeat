@@ -4,21 +4,27 @@
 
 <li><a><i id="icon_back" class="icon-backward"></i></a></li>
 <li><a>
-  <i id="play-pause" 
+  <i id="play-pause" rel="tooltip"
     <% if (is_playing) { %>
         class="icon-pause"
     <% } else { %>
         class="icon-play"
     <% } %>>
   </i>
-</a></li>
+  </a>
+  <% if (play_error) { %>
+  <p id="play_error" class="tip">
+    <%= play_error %>
+  </p>
+  <% } %>
+</li>
 <li><a><i id="icon_heart" class="icon-heart"></i></a></li>
 <li><a><i id="icon_forward" class="icon-forward"></i></a></li>
 <% if (playing !== void 0) { %>
   <li>
-    <a id="artist" href="/artists/<%= playing.get('artist_id') %>/"><%= playing.get("artist") %></a>
+    <a id="artist" href="/artists/<%= playing.artist_id %>/"><%= playing.artist %></a>
   </li>
 <li id="space"></li>
-<li><a id="song" href=""><%= playing.get('name') %></a></li>
+<li><a id="song" href=""><%= playing.name %></a></li>
   <% } %>
 <div id="player"></div>

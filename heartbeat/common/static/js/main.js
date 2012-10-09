@@ -48,7 +48,7 @@ require.config({
         'jquery.jplayer': ['jquery'],
         'jquery.timeselect': ['jquery'],
         'bootstrap': ['jquery'],
-        'bootstrapDropdown': ['jquery'],
+        'bootstrapDropdown': ['bootstrap', 'jquery'],
         'timeago': ['jquery'],
         'gallery': ['jquery'],
     },

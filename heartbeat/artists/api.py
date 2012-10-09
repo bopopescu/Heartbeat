@@ -4,6 +4,7 @@ from django.core import serializers
 from models import Artist, ArtistImage, Album, Song
 
 from tastypie import fields
+from tastypie.constants import ALL
 from tastypie.resources import Resource, ModelResource
 from tastypie.utils import trailing_slash
 
@@ -62,9 +63,30 @@ class SongResource(ModelResource):
   songs and individual songs with the server
 
   """
+  album = fields.ForeignKey(AlbumResource, 'album')
   class Meta:
     queryset = Song.objects.all()
     resource_name = "song"
+    filtering = {
+      'track_num': ALL,
+      }
+
+  def override_urls(self):
+    return [
+        url(r"^(?P<resource_name>%s)/next%s$" % (self._meta.resource_name, trailing_slash()),
+            self.wrap_view("next"), name="next"),
+        ]
+  def next(self, request, **kwargs):
+    if request.GET['album'] and request.GET['track_num']:
+      song = Song.get_song(int(request.GET['album']), int(request.GET['track_num']))
+    if request.GET['album'] and not song:
+      song = Album.get_similar_album(request.GET['album']).song_set[0]
+    if not song:
+      song = Album.get(0).song_set[0]
+    bundle = self.build_bundle(obj=song, request=request)
+    bundle = self.full_dehydrate(bundle)
+    return self.create_response(request, { 'song': bundle })
+
 
 class ArtistImageResource(ModelResource):
     class Meta:

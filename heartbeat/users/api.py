@@ -45,7 +45,6 @@ class CreateProfileResource(ModelResource):
 
     def obj_create(self, bundle, request=None, **kwargs):
         try:
-            pdb.set_trace()
             uForm = UserForm(data = bundle.data)
             pForm = ProfileForm(data = bundle.data)
             if uForm.is_valid() and pForm.is_valid():
@@ -124,10 +123,8 @@ class ProfileResource(ModelResource):
               })
   def loggedin(self, request, **kwargs):
     self.method_check(request, allowed=['get'])
-    csrf_token = get_token(request)
     if request.user.is_authenticated():
       username = request.user.username
-
     else:
       username = ""
     try:
@@ -136,8 +133,7 @@ class ProfileResource(ModelResource):
       artist_id = -1
     return self.create_response(request, {
               'username': username,
-              'artist_id': artist_id,
-              'csrf_token': csrf_token
+              'artistid': artist_id,
             })
   def logout(self, request, **kwargs):
     self.method_check(request, allowed=['get'])

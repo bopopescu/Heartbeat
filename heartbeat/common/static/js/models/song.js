@@ -19,16 +19,16 @@ define([
           _.bindAll(this, "is_playing", "play", "handle_play", "pause", "handle_pause", 'resume', 'stop', 'handle_error'); 
         },
         play: function() {
-          Player.on("error", this.handle_error);
+          Player.trigger("stop");
           Player.on("stop", this.stop);
+          Player.on("error", this.handle_error);
           Player.on("pause", this.handle_pause);
           Player.on("play", this.handle_play);
           Player.on("render", function() { this.trigger("change"); });
           Player.play_song(this);
-          this.handle_play();
         },
         is_playing: function() {
-          return Player.is_playing();
+          return this.get("is_playing") && Player.is_playing();
         },  
         pause: function() {
             Player.pause();
@@ -46,6 +46,7 @@ define([
           this.set({ "is_playing": true,
             "is_paused": false,
           });
+          console.log("handle play");
           this.trigger("change");
         },
         stop: function() {
@@ -53,9 +54,11 @@ define([
             Player.off("pause");
             Player.off("play");
             Player.off("stop");
+            Player.off("render");
             this.set({ 'is_playing': false,
               'is_paused': false,
             });
+            this.trigger("change");
         },
         download: function() {
           util.download(this.get("download_link"));

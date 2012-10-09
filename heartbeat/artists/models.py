@@ -78,6 +78,9 @@ class Song(models.Model):
     def delete(self, *args, **kwargs):
         self.download_link.delete(save=False) # delete the file
         super(Song, self).delete(*args, **kwargs)
+    @staticmethod
+    def get_song(album_id, track_num):
+      return Song.objects.get(album=album_id, track_num=track_num)
 
 class AdsPreferences(models.Model):
     """An Artist's ad preferences
