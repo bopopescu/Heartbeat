@@ -6,20 +6,19 @@ define([
     'loader',
     'text!templates/loginBoxTemplate.html',
     'util',
+    'vent',
     'bootstrapDropdown',
     'jquery.forms',
-], function ($, Backbone,  User, _, Loader, loginBoxTemplate, util) {
+], function ($, Backbone,  User, _, Loader, loginBoxTemplate, util, vent) {
     LoginBox = Backbone.View.extend({
         el: $("#login_box"),
-        defaults: {
-            open: false,
-        },
         handleclick: util.handleClick,
         initialize: function(options) {
             _.defaults(this.options, this.defaults);
-            _.bindAll(this, 'render', 'toggle', 'logout');
+            _.bindAll(this, 'render', 'logout', 'login');
             this.model.bind('error', this.render);
             this.model.bind('change', this.render);
+            this.model.bind('login', this.login);
             this.render();
         },
         events: {
@@ -27,11 +26,6 @@ define([
             "click #username": "loadUserPage",
             "click #register": "register",
             "click #admin": "handleclick",
-            //"click #username_login.dropdown-toggle": "toggle",
-        },
-        toggle: function(event) {
-          this.open = !this.open;
-          this.render();
         },
         render: function(error) {
             var template = _.template( loginBoxTemplate, {
@@ -44,11 +38,6 @@ define([
             $(this.el).html(template);
             $("#username_login").dropdown();
              
-            /*if (this.open) {
-              $("#login").addClass("open");
-            } else {
-              $("#login").removeClass("open");
-            }*/
             var user = this.model;
             $(this.el).find("form").ajaxForm({
                 success: user.logIn,
@@ -60,15 +49,22 @@ define([
                 },
             });
         },
+        login: function() {
+          //Backbone.history.loadUrl(document.location['pathname'], { 'trigger': true });
+          vent.trigger("login");
+          vent.trigger("refresh");
+        },
         loadUserPage: function() {
 
         },
         logout: function() {
-            this.model.logOut();
-            Backbone.history.navigate(document.location['pathname']);
+          this.model.logOut();
+          vent.trigger("logout");
+          //Backbone.history.loadUrl(document.location['pathname'], { 'trigger': true });
         },
         register: function() {
-            Backbone.history.navigate("/users/register/", { trigger: true });
+          vent.trigger("refresh");
+          //Backbone.history.navigate("/users/register/", { trigger: true });
         }
     });
     

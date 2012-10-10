@@ -13,6 +13,10 @@ define([
         this.url = options.url;
       }
     },
+    parse: function(response) {
+      console.log(response);
+      return response;
+    },
   });
   return Albums;
 });

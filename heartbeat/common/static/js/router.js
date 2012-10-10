@@ -3,6 +3,7 @@ define([
     'underscore',
     'backbone',
     'loader',
+    'vent',
     'user',
     'albums',
     'artist',
@@ -14,7 +15,7 @@ define([
     'views/playerView',
     'views/artistAdmin',
     'jquery.jplayer',
-], function($, _, Backbone, Loader, User, Albums, Artist, LoginBox, LoginView, RegisterUser,
+], function($, _, Backbone, Loader, Vent, User, Albums, Artist, LoginBox, LoginView, RegisterUser,
            AlbumListView, ArtistDetailView, PlayerView, ArtistAdmin) {
     var AppRouter = Backbone.Router.extend({
         routes: {
@@ -23,26 +24,45 @@ define([
             '': 'showArtists',
             'artists/': 'showArtists',
             'artists/:id/': 'artistDetails',
-            'artists/:id/admin': 'adminArtist',
+            'artists/:id/admin/': 'adminArtist',
+            'artists/:artist_id/admin/album/:album_id': 'editAlbum',
             "*actions": 'defaultAction'
+        },
+        initialize: function() {
+          _.bindAll(this, 'login', 'logout');
+          Vent.on('login', this.login);
+          Vent.on('logout', this.logout);
+        },
+        login: function() {
+          if (this.artist) {
+            this.artist.set({ 'user_artist_id': this.user.artist_id() });
+          }
+        },
+        logout: function() {
+          if (this.artist) {
+            this.artist.set({ 'user_artist_id': -1 });
+          }
         },
         showLogin: function(){
             if (this.user.loggedIn()) {
               Backbone.history.navigate("/", { trigger: true });
               return;
             }
+            this.currentViews = [];
             $("#content").html("<div id='login_form'></div>");
-            this.loginView = new LoginView({ 
+            var loginView = new LoginView({ 
                 'model': this.user,
                 'el': $("#login_form")
             }).render();
+            this.currentViews.append(loginView);
         },
         showArtists: function(){
             $("#content").html("<div id='album_list'></div>");
             var hotAlbums = new Albums([], { 'url': '/api/users/hot_albums/' });
-            this.albumListView = new AlbumListView({ 'el': $("#album_list"),
+            var albumListView = new AlbumListView({ 'el': $("#album_list"),
                                                    'collection' : hotAlbums,
             });
+            this.currentViews = [ albumListView ];
             hotAlbums.fetch({
                 success: function(a, b, c) {
                     console.log(a);                  
@@ -50,7 +70,7 @@ define([
                     console.log(c);                  
                           }
             });
-            this.albumListView.render();
+            albumListView.render();
         },
         register: function() {
             if (this.user.loggedIn()) {
@@ -58,24 +78,33 @@ define([
               return;
             }
             $("#content").html("<div id='register_form'></div>");
-            this.registerView = new RegisterUser({ 'el': $("#register_form"),
+            var registerView = new RegisterUser({ 'el': $("#register_form"),
                                                    'model': this.user });
+            this.currentViews = [ registerView ];
         },
         artistDetails: function(id) {
           var that = this;
           require([ 'text!templates/album.html' ], function(albumTemplate) {
             $("#content").html("<div id='artist_detail'></div><div id='album_list'></div>");
-            var albums = new Albums([], {url: '/api/users/album/?artist=' + id });
-            var artist = new Artist({ 'is_self': that.user.artist_id() == id,
+            //var albums = new Albums([], {url: '/api/users/album/?artist=' + id });
+            that.artist = new Artist({ 'user_artist_id': that.user.artist_id(),
+              'id': id,
               'url': '/api/users/artist_details/' + id + '/' });
-            this.artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
-                                             'model': artist,
+            var artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
+                                             'model': that.artist,
             });
-            artist.fetch();
+            that.artist.fetch({
+              success: function(a,b,c) {
+                console.log(a);  
+                console.log(b);  
+                console.log(c);  
+                       }, });
+            artistView.render();
+            that.currentViews = [ artistView ];
           });
         },
         adminArtist: function(id) {
-          if (that.user.artist_id() != id) {
+          if (this.user.artist_id() != id) {
             Backbone.history.navigate('/', { trggier: true });
             return;
           }
@@ -88,6 +117,11 @@ define([
             'model': artist,
           });
           artist.fetch();
+        },
+        editAlbum: function(artist_id, album_id) {
+          alert(artist_id + " " + album_id);
+          $("#content").html("<div id='edit_abum'></div>");
+          
         },
         defaultAction: function() {
             alert(Backbone.history.fragment);

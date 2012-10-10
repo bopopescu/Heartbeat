@@ -20,12 +20,20 @@ define([
                 } else {
                     song = new Song(songs[i]);
                 }
-                song.set({ "artist": this.get("artist").name, 
+                /*song.set({ "artist": this.get("artist").name, 
                     "artist_id": this.get("artist").id,
+                    "album_id": this.get("id") }); 
+                    */
+                song.set({ "artist": this.get("artist"),
+                    "artist_id": this.get("artist_id"),
                     "album_id": this.get("id") }); 
                 newsongs.push(song);
             }
             this.set({ songs: newsongs });
+        }
+        if (this.get('artist') && typeof this.get('artist') == "string") {
+          var urlParts = this.get('artist').split('/');
+          this.set({ artist_id: urlParts[urlParts.length - 2] });
         }
       },
       parse: function(response) {

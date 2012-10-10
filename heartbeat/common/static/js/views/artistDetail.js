@@ -16,20 +16,20 @@ define([
       _.defaults(options, this.defaults);
       _.bindAll(this, 'render');
       this.model.bind("change", this.render);
+      this.model.bind("reset", this.render);
+      console.log("Binding to change, reset");
+      console.log(this.model);
     }, 
     render: function() {
       var artist = this.model;
+      if (artist.get("name") == "") {
+        return;
+      }
       $(this.el).html(_.template(artistDetailTemplate, artist.toJSON()));
-      $(this.el).find("#gallery").gallery({
-        interval: 6000,
-        height: '200px',
-        width: '280px',
-        showOverlay: false,
-        onChange: function(index, element) {
-            $("#gallery_0").children("img").addClass("img-rounded");
-        }
-      });
+      $('.carousel').carousel(2500); 
+      var is_editable = artist.is_self();
       this.albumListView = new AlbumListView({ 'el': $("#album_list"),
+        'is_editable': is_editable,
         'collection': artist.get("albums"),
         'template': albumTemplate
       });
