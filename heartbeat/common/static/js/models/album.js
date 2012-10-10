@@ -31,7 +31,7 @@ define([
             }
             this.set({ songs: newsongs });
         }
-        if (this.get('artist') && typeof this.get('artist') == "string") {
+        if (this.get('artist') && !this.get('artist_id') && typeof this.get('artist') == "string") {
           var urlParts = this.get('artist').split('/');
           this.set({ artist_id: urlParts[urlParts.length - 2] });
         }
@@ -43,6 +43,8 @@ define([
         for (var i = 0; i < songs.length; i++) {
            newsongs.push(new Song(songs[i])); 
         }
+        response['artist_id'] = response['artist'].id;
+        response['artist'] = response['artist'].name;
         response['songs'] = newsongs;
         return response; 
       },
