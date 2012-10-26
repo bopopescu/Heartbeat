@@ -21,10 +21,11 @@
         <span class="help-inline"><%= password_error %></span>
       </div>
     </div>
-    <div class="control-group">
+    <div class="control-group<% if (password2_error) {%> error <% } %>">
       <label class="control-label">password confirmation</label>
       <div class="controls">
         <input type="password" name="password2" id="password2" value="<%= password2 %>" />
+        <span class="help-inline"><%= password2_error %></span>
       </div>
     </div>
     <div class="control-group">

@@ -4,10 +4,9 @@ define([
     'underscore',
     'text!templates/player.html',
     'util',
-    'player',
     'jquery.jplayer',
     'bootstrap',
-], function($, Backbone, _, playerTemplate, util, Queue) {
+], function($, Backbone, _, playerTemplate, util) {
     var PlayerView = Backbone.View.extend({
         events: {
             "click i.icon-play": "play_pause",
@@ -22,39 +21,49 @@ define([
           this.playing = undefined;
           this.$el = $("#nav1");
           this.play_error = "";
-          this.player = $("#player");
           _.bindAll(this, 'ready', 'play', 'pause', 'setmedia', 'display_error', 'render', 'is_playing', 'play_song', 'get_next', 'play_now', 'play_next');
           var that = this;
+          this.isready = false;
+          this.player = $("#player");
           this.player.jPlayer({
             ready: this.ready,
             error: this.display_error,
             play: function() { console.log("PLAYING"); that.trigger("play"); that.render(); },
-            pause: function() { that.trigger("pause"); that.render(); },
-            ended: function() { that.trigger("stop"); that.play_next(); },
+            pause: function() { console.log("PAUSE"); that.trigger("pause"); that.render(); },
+            ended: function() { console.log("ENDED"); that.trigger("stop"); that.play_next(); },
+            wmode: "window",
+            solution: "html, flash",
+            swfPath: "/static/js/libs/jPlayer/Jplayer.swf",
+            supplied: "mp3",
           });
           this.render();
         },
         handleClick: util.handleClick,
 
         ready: function() {
-            console.log($("#player"));
+          console.log("READY")
+          this.isready = true;
         },
         play_song: function(song) {
           this.playing = song.toJSON()
           this.play_now()
         },
         play_now: function() {
+          console.log("PLAY NOW")
           this.setmedia(this.playing.download_link);
           this.play(0);
-          this.trigger("render");
+          console.log("Played now");
         },
         play: function(time) {
+            console.log("Preplay");
             this.player.jPlayer("play", time);
+            console.log("Postplay");
         },
         pause: function() {
             this.player.jPlayer("pause");
         },
         is_playing: function() {
+          if (!this.isready) { return false; }
           var stat = this.player.data().jPlayer.status;
           return (stat.srcSet && !stat.paused); 
         },
@@ -99,9 +108,11 @@ define([
           this.play_next();
         },
         setmedia: function(link) {
+            console.log("Set media");
             this.player.jPlayer("setMedia", { 
               mp3: link,
             });
+            console.log("Post set media");
         },
         like: function() {
             this.model.like();
@@ -133,11 +144,14 @@ define([
           $("#play-pause").tooltip("destroy");
         },
         render: function() {
+            console.log("Render");
             this.$el.html(_.template(playerTemplate, {
               'is_playing': this.is_playing(),
               'playing': this.playing,
               'play_error': "",
             }));
+
+            /*
             $(".icon-heart").tooltip({
                 title: "we'll play more like this",
                 placement: "bottom",
@@ -147,12 +161,13 @@ define([
               "trigger": "manual",
               "placement": "bottom",
             });
-            this.trigger("render");
+            */
         },
         update_playing_dom: function() {
 
         },
     });
+
     var player = new PlayerView();
     return player;
 });

@@ -66,6 +66,11 @@ define([
         handle_error: function() {
           this.stop();
         },
+        escapeDownloadLink: function() {
+          return (this.get('download_link')) ? 
+            this.get('download_link').split('/').pop().replace(/%20/g, ' ')
+            : ''
+        },
     },
     {
       fromJSON: function(song, album) {

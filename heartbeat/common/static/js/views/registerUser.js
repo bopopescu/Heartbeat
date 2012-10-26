@@ -20,6 +20,7 @@ define([
       bio: "",
       username_error: "",
       password_error: "",
+      password2_error: "",
       email_error: "",
       name_error: "",
       bio_error: "",
@@ -64,21 +65,7 @@ define([
       this.render();
     },
     render: function() {
-      $(this.el).html(_.template(registerTemplate, {
-        'username': this.options.username,
-        'email': this.options.email,
-        'password1': this.options.password1,
-        'password2': this.options.password2,
-        'is_artist': this.options.is_artist,
-        'name': this.options.name,
-        'bio': this.options.bio,
-        'username_error': this.options.username_error,
-        'password_error': this.options.password_error,
-        'email_error': this.options.email_error,
-        'name_error': this.options.name_error,
-        'bio_error': this.options.bio_error,
-        'error': this.options.error,
-      }));
+      $(this.el).html(_.template(registerTemplate, this.options))
       if (!isOpen) {
         this.open();
       }
@@ -112,7 +99,7 @@ define([
       var form = $(this.el).children("form");
       $.ajax({
         type: 'POST',
-        url: '/register/',
+        url: '/accounts/register/',
         contentType: "application/json",
           dataType: "json",
           data: JSON.stringify({
@@ -145,10 +132,11 @@ define([
               Backbone.history.navigate("/", { trigger: true });
           },
           error: function(xhr, textStatus, errorThrown) {
-            var errors = $.parseJSON(xhr.responseText)['error'];
+            var errors = $.parseJSON(xhr.responseText)['form_errors'];
             that.options.username_error = this.undefinedOrDefault(errors['username'], "");
             that.options.email_error = this.undefinedOrDefault(errors['email'], "");
             that.options.password_error = this.undefinedOrDefault(errors['password1'], "");
+            that.options.password2_error = this.undefinedOrDefault(errors['password2'], "");
             that.options.error = this.undefinedOrDefault(errors['__all__'], "");
             that.render();
             console.log(xhr);

@@ -1,9 +1,12 @@
 from django.conf.urls.defaults import url 
 from django.core import serializers
 
+from users.models import Profile
 from models import Artist, ArtistImage, Album, Song
 
 from tastypie import fields
+from tastypie.authentication import Authentication
+from tastypie.authorization import Authorization
 from tastypie.constants import ALL
 from tastypie.resources import Resource, ModelResource
 from tastypie.utils import trailing_slash
@@ -48,14 +51,29 @@ class AlbumResource(ModelResource):
     certain parameters
     
     """
-    artist = fields.ForeignKey(ArtistResource, 'artist')
+    artist = fields.ForeignKey(ArtistResource, 'artist', full=True)
     songs = fields.ToManyField('artists.api.SongResource', 'song_set', full=True)
     class Meta:
         queryset = Album.objects.all()
-        resource_name = "album"
+        resource_name = "albums"
         filtering = {
           "artist": ('exact',),
         }
+        list_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
+        authorization = Authorization()
+
+    #def apply_authorization_limits(self, request, obj_list):
+    #  pdb.set_trace()
+    #  if request.method in ('POST', 'PUT', 'DELETE'):
+    #    try:
+    #      if not request.user.is_anonymous(): 
+    #        return obj_list.filter(artist=request.user.profile.artist)
+    #      else:
+    #        return Album.objects.none()
+    #    except (Profile.DoesNotExist, Artist.DoesNotExist):
+    #      return Album.objects.none()
+    #  else:
+    #    return obj_list
         
 class SongResource(ModelResource):
   """A resource for songs

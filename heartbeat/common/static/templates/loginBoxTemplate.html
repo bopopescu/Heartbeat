@@ -13,7 +13,7 @@
     <b class="caret"></b>
   </a>
   <ul class="dropdown-menu" id="dropdown-menu">
-    <form name="login" method="POST" action="/api/users/profile/login/">
+    <form name="login" method="POST" action="/accounts/login/">
       <div style="display:none">
         <input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value="<%= csrf_token %>" />
       </div>
@@ -34,7 +34,7 @@
 <% } %>
 <% if (username == "") { %>
 <li id="register">
-  <a href="/register/" style="cursor:pointer">register</a>
+  <a href="/accounts/register/" style="cursor:pointer">register</a>
 </li>
 <% } %>
 

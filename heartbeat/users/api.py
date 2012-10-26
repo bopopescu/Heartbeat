@@ -14,8 +14,6 @@ from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
-import pdb
-
 class UserResource(ModelResource):
     """A resource for accessing users.
 

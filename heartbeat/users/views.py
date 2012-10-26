@@ -35,7 +35,7 @@ def register(request):
       user = authenticate(username = data['username'],
                           password = data['password1'])
       login(request, user)
-      resp = HttpResponse(json.dumps({'success': 'true'}), mimetype="applicatio/json")
+      resp = HttpResponse(json.dumps({'success': 'true'}), mimetype="application/json")
       resp.status_code = 201
       return resp 
     else:

@@ -5,4 +5,6 @@ urlpatterns = patterns(
     url(r'^$', 'base'),
     url(r'^(?P<artist_id>\d+)/$', 'base'),
     url(r'^(?P<artist_id>\d+)/admin/$', 'base'),
+    url(r'^(?P<artist_id>\d+)/admin/album/(?P<album_id>\d+)/$', 'base'),
+    url(r'^(?P<artist_id>\d+)/admin/albums/edit/(?P<album_id>\d+)/$', 'put_post_album'),
     )

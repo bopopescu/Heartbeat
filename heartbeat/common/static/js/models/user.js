@@ -1,16 +1,18 @@
 define([
     'jquery',
     'backbone',
-    'underscore'
+    'underscore',
+    'jquery.cookie',
 ], function ($, Backbone, _) {
     var User = Backbone.Model.extend({
         defaults: {
             username: "",
-            loggedin: false,
+            loggedin: void 0,
             is_artist: false,
             error: "",
             artist_id: -1,
-            csrf_token: ""
+            csrf_token: "",
+            checked: false,
         },
         initialize: function() {
             _.bindAll(this, 'logIn', 'loggedIn', 'artist_id');
@@ -18,47 +20,20 @@ define([
             var username = this.get('username');
             var id = this.get('artistId');
             var that = this;
-            $.ajax({
-                type: "GET",
-                url: "/api/users/profile/loggedin/",
-                beforeSend: function(xhr) {
-                    console.log(xhr);
-                },
-                success: function(response, status, xhr, form) {
-                  if (void 0 != response['username']
-                      && "" != response['username']) {
-                    that.logIn(response, status, xhr, form);
-                  }
-                },
-                complete: function(one, two) {
-                    console.log(one);
-                    console.log(two);
-                }
-            });            
+            this.set({ loggedin: $.cookie("user") > 0,
+              is_artist: $.cookie("artist_id") >= 0,
+              artist_id: $.cookie("artist_id"),
+              username: $.cookie("username"),
+            });
         },
         logIn: function(response, status, xhr, form) {
-          if (response['error']) {
-            this.set({'error': response['error']});
-            return false;
+          if (response['status'] != "ERROR") {
+            this.set({ loggedin: response["id"] > 0,
+              is_artist: response["artist_id"] >= 0,
+              artist_id: response["artist_id"],
+              username: response["username"],
+            });
           }
-          var username = response['username'];
-          var artistId = parseInt(response['artistid']);
-	        if (undefined != response['api_key']
-		          || void 0 != response['api_key']) {
-	          this.set({ "api_key": response['api_key'] });
-	        }
-          if (username == null) {
-            this.trigger("error", "Illegal username, password combination");
-            return false;
-          }
-          var isArtist = (artistId > 0)
-            this.set({ 
-              username: username,
-              artist_id: artistId,
-              is_artist: isArtist,
-              loggedin: true,
-          });
-          this.trigger("login");
           return true;
         },
         logOut: function() {
@@ -86,9 +61,36 @@ define([
           return this.get('artist_id');
         },
         loggedIn: function() {
-          var loggedIn = this.get("loggedin");
           return this.get("loggedin");
-        }
-    });
-    return User;
+        },
+        whenLoggedIn: function(callback) {
+          if (this.get("checked")) {
+            callback(this.get("loggedin"));
+          } else {
+            var that = this;
+            this.on("loggedin", function() { callback(that.get('loggedin')); });
+          }
+        },
+        checkLoggedIn: function() {
+          $.ajax({
+            type: "GET",
+            url: "/api/users/profile/loggedin/",
+            beforeSend: function(xhr) {
+              console.log(xhr);
+            },
+            success: function(response, status, xhr, form) {
+              if (response['status'] != "ERROR") {
+                that.logIn(response, status, xhr, form);
+              } else {
+                that.set({ 'loggedin': false });
+              }
+              that.trigger("loggedin");
+            },
+            error: function() {
+              that.trigger("loggedin");
+            },
+          }); 
+        },
+  });
+  return User;
 });

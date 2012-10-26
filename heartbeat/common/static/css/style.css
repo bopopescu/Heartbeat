@@ -15,4 +15,9 @@
   height: 300px;
   margin-top:-40px;
 }
-
+.song .pushright {
+  margin-left: 20px;
+}
+.input-append.date {
+  display: block;
+}

@@ -35,6 +35,8 @@ urlpatterns = patterns(
     url(r'^artists/', include('artists.urls')),
     url(r'^api/', include(users_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^newsletters/', include('emencia.django.newsletter.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 )
 urlpatterns += patterns('',
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {

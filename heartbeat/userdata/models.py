@@ -13,7 +13,7 @@ class Subscription(models.Model):
     based on their preferences.
     
     """
-    profile = models.ForeignKey('users.Profile')
+    profile = models.ForeignKey(User)
     artist = models.ForeignKey(Artist)
     AUTO_GENERATED = (
         (NO, 'no'),
@@ -30,7 +30,7 @@ class Notification(models.Model):
     and received this notification of a new album or something of the sort.
 
     """
-    profile = models.ForeignKey('users.Profile')
+    profile = models.ForeignKey(User)
     album = models.ForeignKey(Album)
     READ_CHOICES = (
         (NO, 'no'),

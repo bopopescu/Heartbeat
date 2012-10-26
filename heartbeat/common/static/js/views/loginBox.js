@@ -50,7 +50,6 @@ define([
             });
         },
         login: function() {
-          //Backbone.history.loadUrl(document.location['pathname'], { 'trigger': true });
           vent.trigger("login");
           vent.trigger("refresh");
         },
@@ -60,11 +59,10 @@ define([
         logout: function() {
           this.model.logOut();
           vent.trigger("logout");
-          //Backbone.history.loadUrl(document.location['pathname'], { 'trigger': true });
         },
         register: function() {
-          vent.trigger("refresh");
-          //Backbone.history.navigate("/users/register/", { trigger: true });
+          Backbone.history.navigate("/accounts/register/", { trigger: true });
+          return false;
         }
     });
     

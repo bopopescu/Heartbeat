@@ -1,6 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-from users.models import Profile
 from artists.models import Artist, Song
 
 YES=1
@@ -14,7 +14,7 @@ class Impression(models.Model):
 
     """
     artist = models.ForeignKey(Artist)
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey(User)
     page = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True)
 
@@ -26,7 +26,7 @@ class AdView(models.Model):
     
     """
     artist = models.ForeignKey(Artist)
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey(User)
     song = models.ForeignKey(Song)
     time = models.DateTimeField(auto_now_add=True)
     timeSpentWatching = models.PositiveIntegerField()

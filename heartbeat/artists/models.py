@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -21,7 +22,7 @@ class Artist(models.Model):
     and a bio, and pictures, etc.
 
     """
-    profile = models.OneToOneField('users.Profile', editable=False)
+    profile = models.OneToOneField(User)
     name = models.CharField(max_length=50, unique=True)
     bio = models.TextField(blank=True)
     def __unicode__(self):
@@ -138,7 +139,7 @@ class Download(models.Model):
     the other should not be set. Time is the time of the download.
     
     """
-    profile = models.ForeignKey('users.Profile')
+    profile = models.ForeignKey(User)
     album = models.ForeignKey(Album)
     song = models.ForeignKey(Song)
     time = models.DateTimeField('date downloaded')
