@@ -257,3 +257,15 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME,
       res = HttpResponse(simplejson.dumps(res), mimetype="application/json")
   else:
     return HttpResponse(simplejson.dumps({'status': 'ERROR'}), mimetype="application/json")
+
+def loggedin(request, *args, **kwargs):
+  if request.user.is_authenticated():
+    username = request.user.username
+    id = request.user.id
+    try:
+      artist_id = request.user.artist.id
+    except Artist.DoesNotExist:
+      artist_id = -1
+    res = { 'status': 'OK', 'username': username, 'id': id, 'artist_id': artist_id }
+    return HttpResponse(simplejson.dumps(res), mimetype="application/json")
+  return HttpResponse(simplejson.dumps({ 'status': 'ERROR' }), mimetype="application/json")

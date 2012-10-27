@@ -29,7 +29,6 @@ define([
         },
         render: function(error) {
             var template = _.template( loginBoxTemplate, {
-              //'open': this.open,
               'error': this.model.get('error'),
               'username': (this.model.get('username') == null) ? "" : this.model.get('username'),
               'artist_id': this.model.get("artist_id"),

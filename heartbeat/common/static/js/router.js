@@ -129,9 +129,9 @@ define([
           require(['album', 'views/editAlbum'], function(Album, EditAlbum) {
             that.user.whenLoggedIn(function(loggedin) {
               if (that.user.artist_id() != artist_id) {
-                Backbone.history.navigate('/', { trggier: true });
+                Backbone.history.navigate('/', { trigger: true });
                 return;
-              }
+              } 
 
               $("#content").html("<div id='edit_album'></div>");
               var album = new Album({ id: album_id });

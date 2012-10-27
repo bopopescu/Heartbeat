@@ -2,8 +2,9 @@ define([
     'jquery',
     'backbone',
     'underscore',
+    'vent',
     'jquery.cookie',
-], function ($, Backbone, _) {
+], function ($, Backbone, _, vent) {
     var User = Backbone.Model.extend({
         defaults: {
             username: "",
@@ -20,21 +21,29 @@ define([
             var username = this.get('username');
             var id = this.get('artistId');
             var that = this;
-            this.set({ loggedin: $.cookie("user") > 0,
-              is_artist: $.cookie("artist_id") >= 0,
-              artist_id: $.cookie("artist_id"),
-              username: $.cookie("username"),
-            });
+            if ($.cookie("user")) {
+              this.set({ loggedin: $.cookie("user") > 0,
+                is_artist: $.cookie("artist_id") >= 0,
+                artist_id: $.cookie("artist_id"),
+                username: $.cookie("username"),
+              });
+            } else {
+              this.checkLoggedIn();
+            }
+            
         },
         logIn: function(response, status, xhr, form) {
           if (response['status'] != "ERROR") {
+            console.log("LOGIN");
+            console.log(response);
             this.set({ loggedin: response["id"] > 0,
               is_artist: response["artist_id"] >= 0,
               artist_id: response["artist_id"],
               username: response["username"],
             });
+            this.trigger("login");
           }
-          return true;
+          return true
         },
         logOut: function() {
             var data = "csrfmiddlewaretoken=" + this.get("csrf_token");
@@ -72,18 +81,21 @@ define([
           }
         },
         checkLoggedIn: function() {
+          var that = this;
           $.ajax({
             type: "GET",
-            url: "/api/users/profile/loggedin/",
+            url: "/accounts/loggedin/",
             beforeSend: function(xhr) {
               console.log(xhr);
             },
             success: function(response, status, xhr, form) {
               if (response['status'] != "ERROR") {
+                console.log(response);
                 that.logIn(response, status, xhr, form);
               } else {
                 that.set({ 'loggedin': false });
               }
+              that.set({"checked": true });
               that.trigger("loggedin");
             },
             error: function() {

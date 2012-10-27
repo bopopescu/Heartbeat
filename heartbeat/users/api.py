@@ -126,12 +126,12 @@ class ProfileResource(ModelResource):
     else:
       username = ""
     try:
-      artist_id = request.user.profile.artist.id
+      artist_id = request.user.artist.id
     except:
       artist_id = -1
     return self.create_response(request, {
               'username': username,
-              'artistid': artist_id,
+              'artist_id': artist_id,
             })
   def logout(self, request, **kwargs):
     self.method_check(request, allowed=['get'])
