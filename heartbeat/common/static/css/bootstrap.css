@@ -1378,7 +1378,8 @@ input[type="checkbox"][readonly] {
 
 .control-group.error input,
 .control-group.error select,
-.control-group.error textarea {
+.control-group.error textarea,
+.error.border {
   border-color: #b94a48;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
      -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);

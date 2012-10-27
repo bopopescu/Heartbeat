@@ -243,8 +243,10 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME,
       request.session['user'] = user.id
       try:
         request.session['artist_id'] = user.artist.id 
+        request.session['artist'] = user.artist.name
       except Artist.DoesNotExist:
         request.session['artist_id'] = -1
+        request.session['artist'] = ""
       request.session['username'] = user.username
       res = {'status': 'OK', 'message': 'Welcome back!', 
           "username": user.username, "id": user.id, "artist_id": request.session['artist_id']}
@@ -264,8 +266,11 @@ def loggedin(request, *args, **kwargs):
     id = request.user.id
     try:
       artist_id = request.user.artist.id
+      artist = request.user.artist.name
     except Artist.DoesNotExist:
       artist_id = -1
-    res = { 'status': 'OK', 'username': username, 'id': id, 'artist_id': artist_id }
+      artist = ""
+    res = { 'status': 'OK', 'username': username, 'id': id, 'artist_id': artist_id,
+        "artist": artist }
     return HttpResponse(simplejson.dumps(res), mimetype="application/json")
   return HttpResponse(simplejson.dumps({ 'status': 'ERROR' }), mimetype="application/json")

@@ -12,6 +12,7 @@ define([
             is_artist: false,
             error: "",
             artist_id: -1,
+            artist: "",
             csrf_token: "",
             checked: false,
         },
@@ -38,6 +39,7 @@ define([
             console.log(response);
             this.set({ loggedin: response["id"] > 0,
               is_artist: response["artist_id"] >= 0,
+              artist: response["artist"],
               artist_id: response["artist_id"],
               username: response["username"],
             });

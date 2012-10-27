@@ -1,30 +1,46 @@
 <h1><%= artist %></h1>
-<form class="form-horizontal" name="album" method="POST" action="/<%= artist_id %>/admin/albums/edit/<%= id %>/">
+<form class="form-horizontal" name="album" method="POST" action="/<%= artist_id %>/admin/album/<% if (id != "") { %>edit/<%= id %>/<%} else {%>new/<% } %>">
   <input type="hidden" name="artist" id="id_artist" value=<%= artist_id %> />
-  <div id=control-group">
+  <div class="control-group <% if (album_errors.title) {%>error<%}%>">
     <label for="id_title" class="control-label">title</label>
     <div class="controls">
-      <input type="text" name="title" maxlength="100" value="<%= _.escape(title) %>" />
+      <input type="text" id="id_title" name="title" maxlength="100" value="<%= _.escape(title) %>" />
+      <% if (album_errors.title) {%>
+        <span class="help-inline"><%= album_errors.title %></span>
+      <% } %>
     </div>
   </div>
-  <div class="control-group fileupload-exists fileupload" data-provides="fileupload">
-    <div class="control-label fileupload-preview fileupload-exists thumbnail">
-      <img src='<%= cover %>' width=200 />
+  <div class="control-group 
+    <% if (cover != "") {%>fileupload-exists <% } else { %>fileupload-new <% } %> 
+    <% if (album_errors.cover) {%>error <% } %> 
+    fileupload" data-provides="fileupload">
+    
+    <div class="control-label fileupload-preview thumbnail" style="height: 150px">
+      <% if (cover != "") { %>
+        <img src='<%= cover %>' width=200 />
+      <% } %>
     </div>
-    <div class="control-label fileupload-new thumbnail"><img src='' width=200 /></div>
     <div class="dropable controls">
       <span class="btn btn-file">
         <span class="fileupload-new">Select Cover</span>
         <span class="fileupload-exists">Change Cover</span>
         <input type="file" name="cover" id="id_cover" value='<%= cover %>' />
       </span>
+        <% if (album_errors.cover) { %>
+          <span class="help-inline"><%= album_errors.cover %></span>
+        <% } %>
     </div>
   </div>
-  <div class="control-group">
+  <div class="control-group <% if (album_errors.release_date) {%>error <%}%>">
     <label class="control-label" for="id_release_date">Release date</label>
-    <div class="input-append date controls" data-date='<%= release_date %>'>
-      <input type="text" class="uneditable-input" name="release_date" id="id_release_date" value='<%= release_date %>'/>
-      <span class="add-on"><i class="icon-calendar"></i></span>
+    <div class="date controls" data-date='<%= release_date %>'>
+      <div class="input-append">
+        <input type="text" class="uneditable-input" name="release_date" id="id_release_date" value='<%= release_date %>'/>
+        <span class="add-on"><i class="icon-calendar"></i></span>
+      </div>
+      <% if (album_errors.release_date) {%>
+        <span class="help-inline"><%= album_errors.release_date %></span>
+      <% } %>
     </div>
   </div>
   <input type="hidden" name="form-TOTAL_FORMS" value="<%= songs.length %>" id="id_form-TOTAL_FORMS" />
@@ -41,21 +57,27 @@
   </div> -->
   <ul class="unstyled" id="sortable_album">
     <% _.each(songs, function(song, index) { %>
-    <li class="song control-group fileupload<% if (song.get('download_link')) {%> fileupload-exists<% } else { %> fileupload-new <% } %>" id=<%=index%> data-provides="fileupload">
-        <input type="hidden" name="form-<%= index %>-id" value="<%= song.get("id") || '' %>" />
+    <li class="song control-group fileupload
+      <% if (song.get('download_link')) {%> fileupload-exists<% } else { %> fileupload-new <% } %>" 
+      id=<%=index%> data-provides="fileupload">
+        <input type="hidden" name="form-<%= index %>-id" value="<%= song.get('id') || '' %>" />
         <label for="id_form-<%= index %>-name" class="control-label">
           <i class="icon-move"></i>&nbsp;&nbsp;
           <input type="hidden" id="id_form-<%= index %>-track_num" name="form-<%= index %>-track_num" value=<%= index+1 %> /> 
           <span class="track_num"> <%= index+1 %></span>&nbsp;&nbsp;&nbsp;
         </label>
-        <!--<div class="controls"> -->
-          <input class='pushright' id="id_form-<%= index %>-name" name="form-<%= index %>-name" maxlength=100 type="text" value='<%= _.escape(song.get('name')) %>' />
-          <span class="span2 fileupload-preview uneditable-input"><%= _.escape(song.escapeDownloadLink()) %> </span>
-          <span class="btn btn-file">
-            <span class="fileupload-new">Select Song</span>
-            <span class="fileupload-exists">Change Song</span>
-            <input type="file" class="file" name="form-<%= index %>-download_link" id="id_form-2-download_link" />
-          </span>
+        <input class='pushright <% if (song_errors.length >= index && song_errors[index].name) {%> error border <% } %>' id="id_form-<%= index %>-name" 
+                name="form-<%= index %>-name" maxlength=100 type="text" 
+                value='<%= _.escape(song.get('name')) %>' />
+
+                <span class="span2 fileupload-preview uneditable-input <% if (song_errors.length >= index && song_errors[index].download_link) {%> border error <% } %>">
+          <%= _.escape(song.escapeDownloadLink()) %> 
+        </span>
+        <span class="btn btn-file">
+          <span class="fileupload-new">Select Song</span>
+          <span class="fileupload-exists">Change Song</span>
+          <input type="file" class="file" name="form-<%= index %>-download_link" id="id_form-2-download_link" />
+        </span>
     </li>
     <% }) %>
   </ul>

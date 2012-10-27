@@ -5,9 +5,14 @@ define([
 ], function ($, Backbone, Song) {
     var Album = Backbone.Model.extend({
       defaults: {
+        id: "",
+        cover: "",
+        release_date: "",
         title: "",
-        artist: {},
+        artist: "",
         songs: [],
+        album_errors: {},
+        song_errors: {},
       },
       url: function() {
         return '/api/users/albums/' + this.get('id') + '/';
@@ -53,15 +58,15 @@ define([
         }
         return response; 
       },
-      /* Moves song at @beginindex to @endindex */
+      /* Moves song at @beginindex to @endindex 
+       * We suppress the change event. */
       reorderSong: function(beginindex, endindex) {
         var songs = this.get("songs");
         var removed = songs.splice(beginindex, 1)[0];
         songs.splice(endindex, 0, removed);
-        this.trigger("change");
       },
       setReleaseDate: function(date) {
-        this.set({ 'release_date': date });
+        this.attributes['release_date'] = date;
       },
       songCount: function() {
         return this.get("songs").length;
@@ -69,19 +74,19 @@ define([
       addSong: function() {
         var song = new Song({ track_num: this.songCount() });
         this.get("songs").push(song);
-        this.trigger("change");
       },
       removeSong: function(index) {
         this.get("songs").splice(index, 1);
         _.each(this.get("songs"), function(song, index) {
           song.attributes['track_num'] = index;
         });
-        this.trigger("change");
       },
       setName: function(index, name) {
         this.get("songs")[index].attributes['name'] = name;
-        this.trigger("change");
       },
+      setTitle: function(title) {
+        this.attributes['title'] = title;
+      }
     });
     return Album;
 });

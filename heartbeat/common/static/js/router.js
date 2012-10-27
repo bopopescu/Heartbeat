@@ -16,6 +16,7 @@ define([
             'artists/': 'showArtists',
             'artists/:id/': 'artistDetails',
             'artists/:id/admin/': 'adminArtist',
+            'artists/:artist_id/admin/album/new/': 'newAlbum',
             'artists/:artist_id/admin/album/:album_id/': 'editAlbum',
             "*actions": 'defaultAction'
         },
@@ -142,6 +143,24 @@ define([
                 editAlbum.render();
                 }, 
               });
+            });
+          });
+        },
+        newAlbum: function(artist_id) {
+          var that = this;
+          require(['album', 'views/editAlbum'], function(Album, EditAlbum) {
+            that.user.whenLoggedIn(function(loggedin) {
+              if (that.user.artist_id() != artist_id) {
+                Backbone.history.navigate('/', { trigger: true });
+                return;
+              } 
+
+              $("#content").html("<div id='edit_album'></div>");
+              var album = new Album({"artist_id": artist_id, "artist": that.user.get("artist")  });
+              var editAlbum = new EditAlbum({el: $("#edit_album"),
+                model: album 
+              });
+              editAlbum.render();
             });
           });
         },

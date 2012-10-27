@@ -5,26 +5,32 @@ define([
     'album',
     'text!templates/editAlbum.html',
     'modernizr',
+    'song',
     'jquery-ui',
     'datepicker',
     'formset',
     'bootstrap-fileupload',
     'jquery.forms',
-], function($, _, Backbone, Album, editAlbumTemplate, Modernizr) {
+], function($, _, Backbone, Album, editAlbumTemplate, Modernizr, Song) {
   var EditAlbum = Backbone.View.extend({
+    events: {
+      "change #id_title": "setTitle",
+    },
     initialize: function(options) {
-      _.bindAll(this, 'render');
+      _.bindAll(this, 'render', 'setTitle', 'displayerror');
       this.model.bind("change", this.render);
-      jQuery.event.props.push('dataTransfer');
       this.initial = 0;
       this.setinitial = true;
     },
     render: function() {
       if (this.setinitial) {
         this.initial = this.model.get("songs").length;
+        this.model.attributes['initial'] = this.initial;
         this.setinitial = false;
+        if (this.initial == 0) {
+          this.model.attributes['songs'] = [new Song,new Song,new Song] 
+        }
       }
-      this.model.attributes['initial'] = this.initial;
       $(this.$el).html(_.template(editAlbumTemplate, this.model.toJSON()));
       var albumList = $("#sortable_album");
       var that = this;
@@ -64,24 +70,23 @@ define([
       });
       this.$el.find("form").ajaxForm({
         contentType: 'application/json',
-        headers: {
-          "X-HTTP-Method-Override": "PUT",
-          'HTTP-X-HTTP-Method-Override': 'PUT',
-          'HTTP_X_HTTP_METHOD_OVERRIDE': 'PUT',
-        },
         success: function(responseText, status, xhr, form) {
           Backbone.history.navigate("/artists/" + that.model.get("artist_id") + "/", { trigger: true });
         },
-        error: function(a,b,c) {
-          console.log(a);
-          console.log(b);
-          console.log(c);
-        },
-        beforeSend: function(a,b,c) {
-          console.log(a);
-          console.log(b);
-          console.log(c);
-        },
+        error: that.displayerror,
+      });
+    },
+    setTitle: function(event) {
+      this.model.setTitle($(event.currentTarget).val());
+    },
+    displayerror: function(xhr, textStatus, error) {
+      console.log(xhr);
+      console.log(textStatus);
+      console.log(error);
+      var errors = $.parseJSON(xhr.responseText)['errors'];
+      console.log(errors);
+      this.model.set({ 'album_errors': errors['album_errors'],
+        'song_errors': errors['song_errors']
       });
     },
   });
