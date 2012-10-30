@@ -54,6 +54,16 @@ class RegistrationForm(forms.Form):
         else:
             return self.cleaned_data['username']
 
+    def clean_email(self):
+      """
+        Validate that the email is unique
+
+      """
+      if User.objects.filter(email=self.cleaned_data['email']).exists():
+        raise forms.ValidationError(_("A user with that email already exists"))
+      else:
+        return self.cleaned_data['email']
+
     def clean(self):
         """
         Verifiy that the values entered into the two password fields

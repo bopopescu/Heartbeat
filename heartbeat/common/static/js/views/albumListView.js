@@ -14,7 +14,8 @@ define([
         el: $("#album_list"),
         defaults: function() {
           return {
-            is_editable: false,
+            admin: false,
+            artist_id: -1,
             template: albumTemplate,
           }
         },
@@ -24,8 +25,7 @@ define([
         initialize: function(options) {
             this.options = _.extend(this.defaults(), options)
             _.bindAll(this, 'render');
-            var that = this;
-            this.collection.bind("change", function() { console.log("OH NO A CHANGE!") ; that.render(); that.render(); that.render()});
+            this.collection.bind("change", this.render());
             this.collection.bind("reset", this.render);
             //this.collection.bind("add", this.addAlbum);
         },
@@ -39,15 +39,17 @@ define([
         render: function() {
             console.log("Clearing dic");
             $(this.el).empty();
-            $(this.el).append(_.template(albumBoxTemplate, {}));
+            $(this.el).append(_.template(albumBoxTemplate, {
+              'admin': this.options.admin,
+              'artist_id': this.options.artist_id,
+            }));
             this.albums = $(this.el).find("dl");
             var that = this;
             this.collection.each(function(album) {
-              album.attributes['is_editable'] = that.options.is_editable;
+              album.attributes['admin'] = that.options.admin;
               var tmp = new AlbumView({ model: album, template: that.options.template });
               tmp.render();
               that.albums.append(tmp.$el);
-              console.log("APPENDING ALBUM " + that.collection.length);
             });
             $("time").timeago();
         },

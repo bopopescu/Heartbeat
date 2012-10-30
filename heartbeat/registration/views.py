@@ -15,6 +15,9 @@ from django.template import RequestContext
 from registration.backends import get_backend
 
 from artists.models import Artist
+from artists.forms import ArtistForm
+
+from decorators import ajax_required
 
 
 def activate(request, backend,
@@ -98,7 +101,9 @@ def activate(request, backend,
                               context_instance=context)
 
 
+@ajax_required
 def register(request, backend, success_url=None, form_class=None,
+             artist_form_class=ArtistForm,
              disallowed_url='registration_disallowed',
              template_name='registration/registration_form.html',
              extra_context=None):
@@ -187,17 +192,15 @@ def register(request, backend, success_url=None, form_class=None,
     if form_class is None:
         form_class = backend.get_form_class(request)
 
-    import pdb
-    pdb.set_trace()
     if request.method == 'POST':
         form = form_class(data=request.POST, files=request.FILES)
         artist_form = None
-        if 'artist' in request.POST:
+        if request.POST['artist'] == 'true':
           artist_form = artist_form_class(data=request.POST, files=request.FILES)
-        if form.is_valid() and (aForm is None or aForm.is_valid()):
+        if form.is_valid() and (artist_form is None or artist_form.is_valid()):
             new_user = backend.register(request, **form.cleaned_data)
-            if 'artist' in request.POST:
-              artist = aForm.save(commit=False)
+            if request.POST['artist'] == 'true':
+              artist = artist_form.save(commit=False)
               artist.profile = new_user
               artist.save
 
@@ -233,8 +236,11 @@ def register(request, backend, success_url=None, form_class=None,
                               {'form': form},
                               context_instance=context)
 
+@ajax_required
 def login(request, redirect_field_name=REDIRECT_FIELD_NAME, 
     authentication_form=AuthenticationForm, *args, **kwargs):
+  import pdb
+  pdb.set_trace()
   if request.method == "POST":
     form = authentication_form(data=request.POST)
     if form.is_valid():
@@ -255,8 +261,10 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME,
       res = {}
       res.update({ 'status': 'ERROR' })
       form_errors = dict([(k, [unicode(e) for e in v]) for k,v in form.errors.items()])
-      res.update("form_errors", form_errors)
+      res.update({"form_errors": form_errors})
       res = HttpResponse(simplejson.dumps(res), mimetype="application/json")
+      res.status_code = 400
+      return res
   else:
     return HttpResponse(simplejson.dumps({'status': 'ERROR'}), mimetype="application/json")
 

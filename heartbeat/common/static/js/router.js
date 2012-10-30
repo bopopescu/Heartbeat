@@ -5,8 +5,9 @@ define([
     'vent',
     'user',
     'loginBox',
+    'views/playerView',
     'jquery.jplayer',
-], function($, _, Backbone, Vent, User, LoginBox) {
+], function($, _, Backbone, Vent, User, LoginBox, PlayerView) {
            
     var AppRouter = Backbone.Router.extend({
         routes: {
@@ -94,32 +95,28 @@ define([
             var artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
                'model': that.artist,
             });
-            that.artist.fetch({
-              success: function(a,b,c) {
-                console.log(a);  
-                console.log(b);  
-                console.log(c);  
-               }, 
-            });
+            that.artist.fetch();
             artistView.render();
             that.currentViews = [ artistView ];
           });
         },
         adminArtist: function(id) {
+          var that = this;
           this.user.whenLoggedIn(function() {
-            if (this.user.artist_id() != id) {
+            if (that.user.artist_id() != id) {
               Backbone.history.navigate('/', { trggier: true });
               return;
             }
           
-            var that = this;
-            require(['artist', 'views/artistAdmin'], function(Artist, ArtistAdmin) {
+            require(['artist', 'views/artistDetail'], function(Artist, ArtistDetail) {
               var artist = new Artist({ 'is_self': true,
+                'user_artist_id': that.user.get('artist_id'),
                 'url': '/api/users/artist_details/' + id + '/'
               });
               $("#content").html("<div id='admin_artist'></div>");
-              var adminView = new ArtistAdmin({ 'el': $("#admin_artist"),
+              var adminView = new ArtistDetail({ 'el': $("#admin_artist"),
                 'model': artist,
+                'admin': true,
               });
               artist.fetch();
             });
@@ -165,12 +162,11 @@ define([
           });
         },
         defaultAction: function() {
-            alert(Backbone.history.fragment);
         }
     });
 
     var initialize = function(){
-        //var player = PlayerView;
+      var player = PlayerView;
       var app_router = new AppRouter;
       app_router.user = new User();
       this.loginBox = new LoginBox({ el: $("#nav2.nav"), 'model': app_router.user });

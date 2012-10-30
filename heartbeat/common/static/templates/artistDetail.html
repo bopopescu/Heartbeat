@@ -1,9 +1,3 @@
-<!--
-        <li><a href="<%= images[0].image %>"><img class="img-rounded" src="<%= images[0].image %>" /></a></li>
-        <li><a href="<%= images[1].image %>"><img class="img-rounded" src="<%= images[1].image %>" /></a></li>
-    </ul>
-</div>
--->
 <div class="hero-unit">
   <div id="myCarousel" class="carousel slide pull-left">
     <div class="carousel-inner">
@@ -18,6 +12,6 @@
   <p><%= bio %></p>
   <button class="btn btn-primary">Donate</button> 
   <% if (user_artist_id == id) { %>
-    <button class="btn btn-primary">Admin</button>
+    <button class="btn btn-primary">Edit</button>
   <% } %>
 </div>

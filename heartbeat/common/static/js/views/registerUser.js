@@ -102,7 +102,7 @@ define([
         url: '/accounts/register/',
         contentType: "application/json",
           dataType: "json",
-          data: JSON.stringify({
+          data: {
             username: that.options.username,
             email: that.options.email,
             password1: that.options.password1,
@@ -110,7 +110,7 @@ define([
             artist: that.options.is_artist,
             name: that.options.name,
             bio: that.options.bio,
-          }),
+          },
           beforeSend: function(a, b, c) {
             console.log(a);
             console.log(b);

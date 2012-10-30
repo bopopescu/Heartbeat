@@ -5,7 +5,7 @@
   </dt>
   <dd>
   Released <time class="timeago" datetime="<%= release_date %>"></time><br />
-  <% if (is_editable) { %>
+  <% if (admin) { %>
     <a href="/artists/<%= artist_id %>/admin/album/<%= id %>/">edit</a>
   <% } %>
   <i class="icon-download-alt"></i>

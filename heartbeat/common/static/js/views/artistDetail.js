@@ -17,8 +17,6 @@ define([
       _.bindAll(this, 'render');
       this.model.bind("change", this.render);
       this.model.bind("reset", this.render);
-      console.log("Binding to change, reset");
-      console.log(this.model);
     }, 
     render: function() {
       var artist = this.model;
@@ -27,9 +25,10 @@ define([
       }
       $(this.el).html(_.template(artistDetailTemplate, artist.toJSON()));
       $('.carousel').carousel(2500); 
-      var is_editable = artist.is_self();
+      var admin = artist.is_self();
       this.albumListView = new AlbumListView({ 'el': $("#album_list"),
-        'is_editable': is_editable,
+        'admin': admin,
+        'artist_id': artist.get("id"),
         'collection': artist.get("albums"),
         'template': albumTemplate
       });
