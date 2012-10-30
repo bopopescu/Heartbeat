@@ -22,6 +22,8 @@ def put_album(request, artist_id, album_id):
 def create_album(request, artist_id, album_id=None):
   if request.method != "POST":
     return HttpResponse(json.dumps({ 'error': 'Invalid http method for this uri' }))
+  import pdb
+  pdb.set_trace()
   SongFormset = inlineformset_factory(Album, Song)
   if album_id is not None:
     album = Album.objects.get(pk=album_id)

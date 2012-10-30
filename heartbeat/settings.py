@@ -1,10 +1,12 @@
 # Django settings for heartbeat project.
 import os.path
 import dj_database_url
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
+sys.path.insert(1, PROJECT_DIR)
 
 ADMINS = (
     ('Ben Augarten', 'baugarten@gmail.com'),
@@ -152,6 +154,7 @@ INSTALLED_APPS = (
     'ads',
     'tagging',
     'emencia.django.newsletter',
+    'gunicorn',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

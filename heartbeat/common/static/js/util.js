@@ -1,6 +1,7 @@
 define([
     'jquery',
     'backbone',
+    'jquery.filedownload',
 ], function($, Backbone) {
     return {
         handleClick: function(event) {
@@ -10,13 +11,14 @@ define([
             }
         },
         download: function(url) {
-          var iframe;
+          $.fileDownload(url);
+          /*var iframe;
           iframe = $("#hiddenDownloader");
           if (iframe.length === 0) {
             $("body").append("<iframe style='display:none' id='hiddenDownloader'></iframe>");
             iframe = $("#hiddenDownloader");
           }
-          iframe.attr("src", url);
+          iframe.attr("src", url);*/
         },
     };
 });
