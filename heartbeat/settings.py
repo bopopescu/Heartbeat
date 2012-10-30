@@ -3,7 +3,7 @@ import os.path
 import dj_database_url
 import sys
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 PROJECT_DIR = os.path.dirname(__file__)
 sys.path.insert(1, PROJECT_DIR)
