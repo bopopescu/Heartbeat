@@ -60,7 +60,7 @@
  * 
  * 
  **********************************************************************/
-
+define(['jquery'], function(jQuery) {
 jQuery.ptTimeSelect = {
 	version: "0.7.3"
 };
@@ -205,15 +205,15 @@ jQuery.ptTimeSelect._ptTimeSelectInit = function () {
 				// Add the events to the functions
 				e.find('.ptTimeSelectMin')
 					.bind("click", function(){
-						jQuery.ptTimeSelect.setMin($(this).text());
+						jQuery.ptTimeSelect.setMin(jQuery(this).text());
 	 				});
 				
 				e.find('.ptTimeSelectHr')
 					.bind("click", function(){
-						jQuery.ptTimeSelect.setHr($(this).text());
+						jQuery.ptTimeSelect.setHr(jQuery(this).text());
 	 				});
 
-				$(document).mousedown(jQuery.ptTimeSelect._doCheckMouseClick);			
+				jQuery(document).mousedown(jQuery.ptTimeSelect._doCheckMouseClick);			
 			}//end if
 		}
 	);
@@ -379,7 +379,7 @@ jQuery.ptTimeSelect.openCntr = function (ele) {
  * 
  */
 jQuery.ptTimeSelect.closeCntr = function(i) {
-	var e = $("#ptTimeSelectCntr");
+	var e = jQuery("#ptTimeSelectCntr");
 	if (e.is(":visible") == true) {
 		
 		// If IE, then check to make sure it is realy visible
@@ -394,7 +394,7 @@ jQuery.ptTimeSelect.closeCntr = function(i) {
 			.removeClass()
 			.css("width", "");
 		if (!i) {
-			i = $(".isPtTimeSelectActive");
+			i = jQuery(".isPtTimeSelectActive");
 		}
 		if (i) {
 			var opt = i.removeClass("isPtTimeSelectActive")
@@ -409,7 +409,7 @@ jQuery.ptTimeSelect.closeCntr = function(i) {
 
 
 jQuery.ptTimeSelect._doCheckMouseClick = function(ev){
-	if (!$("#ptTimeSelectCntr:visible").length) {
+	if (!jQuery("#ptTimeSelectCntr:visible").length) {
 		return;
 	}
 	if (   !jQuery(ev.target).closest("#ptTimeSelectCntr").length
@@ -473,7 +473,7 @@ jQuery.fn.ptTimeSelect = function (opt) {
 			return this;
 		}
 		var thisOpt = {};
-		thisOpt = $.extend(thisOpt, jQuery.ptTimeSelect.options, opt);
+		thisOpt = jQuery.extend(thisOpt, jQuery.ptTimeSelect.options, opt);
 		e.addClass('hasPtTimeSelect').data("ptTimeSelectOptions", thisOpt);
 		
 		//Wrap the input field in a <div> element with
@@ -505,4 +505,4 @@ jQuery.fn.ptTimeSelect = function (opt) {
  * 
  */
 
-
+});

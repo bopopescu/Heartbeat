@@ -1,2 +1,5 @@
-<table id="albums" style="width:100%">
-</table>
+<dl id="albums"> 
+</dl>
+<% if (admin) {%>
+<a href="/artists/<%= artist_id %>/admin/album/new/" class="btn btn-primary">Add Album</button>
+<% } %>
