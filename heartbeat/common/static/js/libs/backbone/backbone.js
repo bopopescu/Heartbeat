@@ -1,4 +1,4 @@
-define(['libs/backbone/backbone-min'], function(){
+define(['jquery', 'underscore', 'libs/backbone/backbone-min'], function($, _){
     _.noConflict();
     $.noConflict();
     Backbone.Collection.prototype.parse = function( data ) {
