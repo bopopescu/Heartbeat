@@ -30,27 +30,12 @@ require.config({
         'loginBox': 'views/loginBox',
     },
     shim: {
-        'backbone': {
+        underscore: {
+          exports: '_'
+        },
+        backbone: {
             deps: ['underscore', 'jquery'],
-//            exports: 'Backbone'
         },
-/*        'user': {
-            deps: [ 'backbone', 'jquery', 'underscore' ]
-        },
-        'song': {
-            deps: ['underscore', 'backbone', 'jquery']
-        },
-        'songs': {
-            deps: ['underscore', 'backbone', 'jquery', 'song']
-        },
-        'album': {
-        deps: ['underscore', 'backbone', 'jquery', 'song']
-        },
-        'albums': {
-            deps: ['underscore', 'backbone', 'jquery', 'album']
-        },
-        'loginBox': ['underscore', 'backbone', 'jquery', 'user'],
-        */
         'jquery.form': ['jquery'],
         'jquery-ui': ['jquery'],
         'jquery.jplayer': ['jquery'],
