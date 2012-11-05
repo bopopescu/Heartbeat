@@ -12,7 +12,8 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             'users/login/': 'showLogin',
-            'accounts/register/': 'register',
+            //'accounts/register/': 'register',
+            'accounts/login/': 'showLogin',
             '': 'showArtists',
             'artists/': 'showArtists',
             'artists/:id/': 'artistDetails',
@@ -28,12 +29,19 @@ define([
         },
         login: function() {
           if (this.artist) {
-            this.artist.set({ 'user_artist_id': this.user.artist_id() });
+            this.artist.attributes['user_artist_id'] = this.user.artist_id();
           }
+          this.rerender();
         },
         logout: function() {
           if (this.artist) {
-            this.artist.set({ 'user_artist_id': -1 });
+            this.artist.attributes['user_artist_id'] = -1;
+          }
+          this.rerender();
+        },
+        rerender: function() {
+          for (var i = 0; i < this.currentViews.length; i++) {
+            this.currentViews[i].render();
           }
         },
         showLogin: function(){
@@ -43,13 +51,12 @@ define([
             }
             var that = this;
             require(['views/loginView'], function(LoginView) {
-              that.currentViews = [];
               $("#content").html("<div id='login_form'></div>");
               var loginView = new LoginView({ 
                   'model': that.user,
                   'el': $("#login_form")
               }).render();
-              that.currentViews.append(loginView);
+              that.currentViews = [ loginView ];
             });
         },
         showArtists: function(){
@@ -60,15 +67,12 @@ define([
               var albumListView = new AlbumListView({ 'el': $("#album_list"),
                                                      'collection' : hotAlbums,
               });
-              that.currentViews = [ albumListView ];
               hotAlbums.fetch({
                   success: function(a, b, c) {
-                      console.log(a);                  
-                      console.log(b);                  
-                      console.log(c);                  
+                    albumListView.render();
                   }
               });
-              albumListView.render();
+              that.currentViews = [ albumListView ];
             });
         },
         register: function() {
@@ -119,6 +123,7 @@ define([
                 'admin': true,
               });
               artist.fetch();
+              that.currentViews = [ adminView ];
             });
           });
         },
@@ -134,12 +139,13 @@ define([
               $("#content").html("<div id='edit_album'></div>");
               var album = new Album({ id: album_id });
               var editAlbum = new EditAlbum({el: $("#edit_album"),
-                model: album });
-              album.fetch({
-                success: function() {
-                editAlbum.render();
-                }, 
+                model: album 
               });
+              album.fetch({
+                success: function() { editAlbum.render(); }, 
+              });
+              
+              that.currentViews = [ editAlbum ];
             });
           });
         },
@@ -158,6 +164,7 @@ define([
                 model: album 
               });
               editAlbum.render();
+              that.currentViews = [ editAlbum ];
             });
           });
         },

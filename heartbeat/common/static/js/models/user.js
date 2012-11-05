@@ -17,11 +17,8 @@ define([
             checked: false,
         },
         initialize: function() {
-            _.bindAll(this, 'logIn', 'loggedIn', 'artist_id');
-            var user = this;
-            var username = this.get('username');
-            var id = this.get('artistId');
-            var that = this;
+            _.bindAll(this, 'logIn', 'loggedIn', 'artist_id', 'follow');
+            vent.bind('follow', this.follow);
             if ($.cookie("user")) {
               this.set({ loggedin: $.cookie("user") > 0,
                 is_artist: $.cookie("artist_id") >= 0,
@@ -31,13 +28,45 @@ define([
             } else {
               this.checkLoggedIn();
             }
-            
+        },
+        follow: function(artist_id) {
+          if (!this.loggedIn()) {
+            // must be logged in
+            return;
+          } 
+          var id = this.get("id");
+          /*$.ajax({
+            type: 'POST',
+            url: '/api/users/follow/',
+            dataType: "json",
+            data: {
+              profile: id,
+              artist: artist_id,
+            },
+            beforeSend: function(a,b,c) {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+                        },
+            success: function(a, b, c) {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+            },
+            error: function(a, b, c) {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+
+            },
+          });*/
         },
         logIn: function(response, status, xhr, form) {
           if (response['status'] != "ERROR") {
             console.log("LOGIN");
             console.log(response);
             this.set({ loggedin: response["id"] > 0,
+              id: response['id'],
               is_artist: response["artist_id"] >= 0,
               artist: response["artist"],
               artist_id: response["artist_id"],

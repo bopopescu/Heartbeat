@@ -26,7 +26,7 @@ define([
         },
         events: {
             "click #logout": "logout",
-            "click #username": "loadUserPage",
+            "click #username": "handleclick",
             "click #register": "register",
             "click #admin": "handleclick",
         },
@@ -67,9 +67,6 @@ define([
         login: function() {
           vent.trigger("login");
           vent.trigger("refresh");
-        },
-        loadUserPage: function() {
-
         },
         logout: function() {
           this.model.logOut();

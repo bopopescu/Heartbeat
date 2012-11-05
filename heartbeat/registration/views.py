@@ -239,8 +239,6 @@ def register(request, backend, success_url=None, form_class=None,
 @ajax_required
 def login(request, redirect_field_name=REDIRECT_FIELD_NAME, 
     authentication_form=AuthenticationForm, *args, **kwargs):
-  import pdb
-  pdb.set_trace()
   if request.method == "POST":
     form = authentication_form(data=request.POST)
     if form.is_valid():

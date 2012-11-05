@@ -8,6 +8,8 @@ from tastypie.api import Api
 from artists.api import ArtistResource, ArtistDetailsResource, HotAlbumResource, AlbumResource, SongResource
 from users.api import UserResource, CreateProfileResource, ProfileResource
 
+from userdata.api import FollowResource
+
 admin.autodiscover()
 
 users_api = Api(api_name="users")
@@ -20,6 +22,8 @@ users_api.register(ArtistDetailsResource())
 users_api.register(AlbumResource())
 users_api.register(SongResource())
 users_api.register(HotAlbumResource())
+
+users_api.register(FollowResource())
 
 urlpatterns = patterns(
     '',

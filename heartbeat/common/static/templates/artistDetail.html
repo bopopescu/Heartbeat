@@ -13,5 +13,7 @@
   <button class="btn btn-primary">Donate</button> 
   <% if (user_artist_id == id) { %>
     <button class="btn btn-primary">Edit</button>
+  <% } else { %>
+    <button id="follow" class="btn btn-primary">Follow</button>
   <% } %>
 </div>
