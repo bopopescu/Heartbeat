@@ -113,6 +113,10 @@ ROOT_URLCONF = 'urls'
 
 LOGIN_URL = '/accounts/login/'
 
+LOGIN_EXEMPT_URLS = (
+    r'^static/',
+    )
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'wsgi.application'
 
