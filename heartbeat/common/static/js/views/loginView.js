@@ -18,6 +18,7 @@ define([
 
             this.model.bind('change', this.render);
             this.model.bind('error', this.displayError);
+            this.model.bind('login', this.login);
             this.render()
         },
         render: function() {
@@ -33,12 +34,11 @@ define([
             });
         },
         logIn: function(response, status, xhr, form) {
-            if (this.model.logIn(response, status, xhr, form)) {
-                Loader.load(response['url']);
-                Backbone.history.navigate(response['url']);
-            }
-            
-        }
+          this.model.logIn(response, status, xhr, form);
+        },
+        login: function() {
+          Backbone.history.navigate('/', {trigger: true });
+         },
     });
     
     return LoginView;

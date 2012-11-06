@@ -12,7 +12,7 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             'users/login/': 'showLogin',
-            //'accounts/register/': 'register',
+            'accounts/register/': 'register',
             'accounts/login/': 'showLogin',
             '': 'showArtists',
             'artists/': 'showArtists',
@@ -40,8 +40,10 @@ define([
           this.rerender();
         },
         rerender: function() {
-          for (var i = 0; i < this.currentViews.length; i++) {
-            this.currentViews[i].render();
+          if (this.currentViews) {
+            for (var i = 0; i < this.currentViews.length; i++) {
+              this.currentViews[i].render();
+            }
           }
         },
         showLogin: function(){
@@ -55,7 +57,8 @@ define([
               var loginView = new LoginView({ 
                   'model': that.user,
                   'el': $("#login_form")
-              }).render();
+              });
+              loginView.render();
               that.currentViews = [ loginView ];
             });
         },

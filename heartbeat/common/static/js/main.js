@@ -27,6 +27,7 @@ require.config({
         'albums': 'models/albums',
         'artist': 'models/artist',
         'player': 'models/queue',
+        'follow': 'models/follow',
         'loginBox': 'views/loginBox',
     },
     shim: {

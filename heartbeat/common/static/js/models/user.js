@@ -3,8 +3,9 @@ define([
     'backbone',
     'underscore',
     'vent',
+    'follow',
     'jquery.cookie',
-], function ($, Backbone, _, vent) {
+], function ($, Backbone, _, vent, Follow) {
     var User = Backbone.Model.extend({
         defaults: {
             username: "",
@@ -34,32 +35,23 @@ define([
             // must be logged in
             return;
           } 
-          var id = this.get("id");
-          /*$.ajax({
-            type: 'POST',
-            url: '/api/users/follow/',
-            dataType: "json",
-            data: {
-              profile: id,
-              artist: artist_id,
-            },
-            beforeSend: function(a,b,c) {
-              console.log(a);
-              console.log(b);
-              console.log(c);
-                        },
-            success: function(a, b, c) {
-              console.log(a);
-              console.log(b);
-              console.log(c);
-            },
-            error: function(a, b, c) {
-              console.log(a);
-              console.log(b);
-              console.log(c);
 
-            },
-          });*/
+          var id = this.get("id");
+          var follow = new Follow({ user_id: id, artist_id: artist_id });
+          follow.save({
+              
+          }, {
+            success: function(a,b,c) {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+                     },
+            error: function(a,b,c) {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+                   },
+          });
         },
         logIn: function(response, status, xhr, form) {
           if (response['status'] != "ERROR") {

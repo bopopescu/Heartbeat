@@ -1,6 +1,4 @@
-define(['jquery', 'underscore', 'libs/backbone/backbone-min'], function($, _){
-    _.noConflict();
-    $.noConflict();
+define(['libs/backbone/backbone-min'], function($, _){
     Backbone.Collection.prototype.parse = function( data ) {
       if ( data && data.meta ) {
         this.meta = data.meta;
