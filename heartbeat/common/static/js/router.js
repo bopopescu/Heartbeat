@@ -80,6 +80,7 @@ define([
         },
         register: function() {
           Backbone.history.navigate("/accounts/login/", {trigger: true});
+          return;
           if (this.user.loggedIn()) {
             Backbone.history.navigate("/", { trigger: true });
             return;
