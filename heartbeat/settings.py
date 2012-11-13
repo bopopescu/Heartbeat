@@ -171,7 +171,7 @@ INSTALLED_APPS = (
     'userdata',
     'ads',
     'tagging',
-    'emencia.django.newsletter',
+    #    'emencia.django.newsletter',
     'gunicorn',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
