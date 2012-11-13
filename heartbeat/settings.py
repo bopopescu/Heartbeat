@@ -211,6 +211,6 @@ AUTHENTICATION_BACKENDS = ('users.backends.CaseInsensitiveModelBackend',
 SERIALIZATION_MODULES = {
   'json': 'wadofstuff.django.serializers.json'
 }
-#if (DEBUG):
-#  from settings_dev import *
+if (DEBUG):
+  from settings_dev import *
 

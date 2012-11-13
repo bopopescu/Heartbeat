@@ -93,14 +93,16 @@ define([
         },
         artistDetails: function(id) {
           var that = this;
+          var following = this.user.isfollowing(id);
           require([ 'artist', 'views/artistDetail', 'text!templates/album.html' ], 
               function(Artist, ArtistDetailView, albumTemplate) {
-            $("#content").html("<div id='artist_detail'></div><div id='album_list'></div>");
+            $("#content").html("<div id='artist_detail'></div>");
             that.artist = new Artist({ 'user_artist_id': that.user.artist_id(),
               'id': id,
               'url': '/api/users/artist_details/' + id + '/' });
             var artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
-               'model': that.artist,
+              'model': that.artist,
+              'following': following,  
             });
             that.artist.fetch();
             artistView.render();

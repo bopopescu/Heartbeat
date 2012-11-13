@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.forms.models import inlineformset_factory 
+from django.shortcuts import render_to_response
 
 from models import Album, Song
 from forms import AlbumForm
@@ -7,6 +8,9 @@ from decorators import ajax_required
 
 import pdb
 import json
+
+def splash(request):
+  return render_to_response("splash.html")
 
 @ajax_required
 def base(request):

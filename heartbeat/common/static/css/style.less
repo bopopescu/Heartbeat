@@ -1,0 +1,108 @@
+html, body {
+  min-height: 100%
+}
+
+@red : #CC1D1D;
+
+.navbar {
+  padding-top: 20px;
+}
+.navbar-inner-hb > .container > ul > li > a {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.navbar-inner-hb {
+  border-bottom-width: 4px;
+  border-bottom-style: solid;
+  border-bottom-color: @red;
+}
+
+.bar {
+  margin: 0 auto;
+  margin-top: 30px;
+  text-align: center;
+  h2 {
+    margin-top: 30px;
+    color: #312D2D;
+  }
+}
+
+footer {
+  border-top-width: 8px;
+  border-top-style: solid;
+  border-top-color: @red;
+  background-color: lighten(@red, 5%);
+  min-height: 300px;
+  height: 100%;
+}
+
+.tip {
+  font-size: 11px;
+  color: #D1D1D1;
+  background:#1d1d1d;
+  display:none; /*--Hides by default--*/
+  padding:6px;
+  position:absolute;    z-index:1000;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.carousel {
+  padding-right: 50px;
+  max-width: 300px;
+  max-height: 300px;
+  margin-top:-40px;
+  display: inline;
+  float: left;
+  .carousel-inner {
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
+.song .pushright {
+  margin-left: 20px;
+}
+.input-append.date {
+  display: block;
+}
+
+.center {
+  text-align: center;
+}
+
+.circle {
+  @height: 350px;
+  @width: 350px;
+  @eggy: 20px;
+  @extra: 50px;
+  margin: 0 auto;
+  width: @width;
+  height: @height;
+  border-radius: @width/2;
+  -webkit-border-radius: @width/2;
+  -moz-border-radius: @width/2;
+
+  border: 2px solid;
+  padding-top: @eggy;
+  padding-bottom: @eggy;
+  .horiz-cover {
+    position: relative;
+    width: 100%;
+    top: 50% - (@eggy/2);
+    height: 4*@eggy;
+    margin-left: -@extra;
+    padding-left: @extra;
+    padding-right: @extra;
+    margin-right: @extra;
+    background-color: #FFFFFF;
+  }
+}
+
+.navbar-inner-hb ul#nav2 {
+  float: right;
+}
+
+.navbar-inner-hb .nav .icon {
+  padding: 10px 0px;
+}

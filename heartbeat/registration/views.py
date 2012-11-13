@@ -5,6 +5,7 @@ Views which allow users to create and activate accounts.
 
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
+from django.core import serializers
 from django.http import HttpResponse
 from django.utils import simplejson
 
@@ -16,6 +17,8 @@ from registration.backends import get_backend
 
 from artists.models import Artist
 from artists.forms import ArtistForm
+
+from userdata.api import UserResource
 
 from decorators import ajax_required
 
@@ -244,17 +247,9 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME,
     if form.is_valid():
       user = form.get_user()
       auth_login(request, user)
-      request.session['user'] = user.id
-      try:
-        request.session['artist_id'] = user.artist.id 
-        request.session['artist'] = user.artist.name
-      except Artist.DoesNotExist:
-        request.session['artist_id'] = -1
-        request.session['artist'] = ""
-      request.session['username'] = user.username
-      res = {'status': 'OK', 'message': 'Welcome back!', 
-          "username": user.username, "id": user.id, "artist_id": request.session['artist_id']}
-      return HttpResponse(simplejson.dumps(res), mimetype="application/json")
+      ur = UserResource()
+      user_bundle = ur.build_bundle(obj=user, request=request)
+      return HttpResponse(ur.serialize(None, ur.full_dehydrate(user_bundle), 'application/json'), mimetype="application/json" )
     else:
       res = {}
       res.update({ 'status': 'ERROR' })
@@ -268,15 +263,8 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME,
 
 def loggedin(request, *args, **kwargs):
   if request.user.is_authenticated():
-    username = request.user.username
-    id = request.user.id
-    try:
-      artist_id = request.user.artist.id
-      artist = request.user.artist.name
-    except Artist.DoesNotExist:
-      artist_id = -1
-      artist = ""
-    res = { 'status': 'OK', 'username': username, 'id': id, 'artist_id': artist_id,
-        "artist": artist }
-    return HttpResponse(simplejson.dumps(res), mimetype="application/json")
+    ur = UserResource()
+    user_bundle = ur.build_bundle(obj=request.user, request=request)
+    return HttpResponse(ur.serialize(None, ur.full_dehydrate(user_bundle), 'application/json'), mimetype="application/json" )
   return HttpResponse(simplejson.dumps({ 'status': 'ERROR' }), mimetype="application/json")
+
