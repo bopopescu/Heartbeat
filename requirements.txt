@@ -8,6 +8,7 @@ dj-database-url==0.2.1
 django-pylibmc-sasl==0.2.4
 django-registration==0.8
 django-tagging==0.3.1
+-e git://github.com/Fantomas42/emencia-django-newsletter.git@b8ed32c7de17752339e3f805f2f5ec4ef505e3d6#egg=emencia.django.newsletter-dev
 gunicorn==0.15.0
 html2text==3.200.3
 lxml==3.0.1
@@ -16,7 +17,9 @@ psycopg2==2.4.5
 pylibmc==1.2.3
 pystache==0.5.2
 python-dateutil==1.5
+requests==0.14.2
 six==1.2.0
+stripe==1.7.5
 vobject==0.8.1c
 wadofstuff-django-serializers==1.1.0
 wsgiref==0.1.2

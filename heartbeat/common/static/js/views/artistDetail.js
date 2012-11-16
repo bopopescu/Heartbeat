@@ -15,6 +15,7 @@ define([
     events: {
       "click #follow": "follow",
       "click #unfollow": "unfollow",
+      "click #donate": "donate",
     },
     initialize: function(options) {
       _.defaults(options, this.defaults);
@@ -60,7 +61,10 @@ define([
         'template': albumTemplate
       });
       this.albumListView.render();
-    }
+    },
+    donate: function() {
+      Backbone.history.navigate("/artists/" + this.model.get("id") + "/donate/", {trigger: true});
+    },
   });
   return ArtistDetail;
 });

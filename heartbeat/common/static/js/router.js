@@ -17,6 +17,7 @@ define([
             '': 'showArtists',
             'artists/': 'showArtists',
             'artists/:id/': 'artistDetails',
+            'artists/:id/donate/': 'donate',
             'artists/:id/admin/': 'adminArtist',
             'artists/:artist_id/admin/album/new/': 'newAlbum',
             'artists/:artist_id/admin/album/:album_id/': 'editAlbum',
@@ -109,6 +110,16 @@ define([
             that.artist.fetch();
             artistView.render();
             that.currentViews = [ artistView ];
+          });
+        },
+        donate: function(artist_id) {
+          var that = this;
+          require(['views/donation'], function(DonationView) {
+            $("#content").html("<div id='donation'></div>");
+            var donationView = new DonationView({ 'el': $("#donation") });
+
+            donationView.render();
+            that.currentViews = [ donationView ];
           });
         },
         adminArtist: function(id) {

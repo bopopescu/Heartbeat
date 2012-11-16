@@ -20,6 +20,7 @@ require.config({
         'jquery.filedownload': 'libs/jquery.filedownload/jquery.filedownload',
         'formset': 'libs/formset/jquery.formset.min',
         'modernizr': 'libs/modernizr/modernizr.min',
+        'stripe': 'https://js.stripe.com/v1/?',
         'user': 'models/user',
         'song': 'models/song',
         'songs': 'models/songs',
