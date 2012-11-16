@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpResponse
 from django.forms.models import inlineformset_factory 
 from django.shortcuts import render_to_response
@@ -5,6 +6,8 @@ from django.shortcuts import render_to_response
 from models import Album, Song
 from forms import AlbumForm
 from decorators import ajax_required
+
+import stripe
 
 import pdb
 import json
@@ -15,6 +18,22 @@ def splash(request):
 @ajax_required
 def base(request):
     return HttpResponse("")
+
+def donate(request, artist_id):
+  pdb.set_trace()
+  if not request.is_ajax() and request.method == "GET":
+    return render_to_response("base.html")
+  if request.method == "POST":
+    amount = int(100*float(request.POST['donation']))
+    stripe.api_key = settings.STRIPE_API_KEY
+    token = request.POST['stripeToken']
+    charge = stripe.Charge.create(
+        amount=amount,
+        currency="usd",
+        card=token,
+        description=request.user.id
+    )
+    pass
 
 @ajax_required
 def post_album(request, artist_id):

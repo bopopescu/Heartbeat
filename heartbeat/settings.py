@@ -211,6 +211,12 @@ AUTHENTICATION_BACKENDS = ('users.backends.CaseInsensitiveModelBackend',
 SERIALIZATION_MODULES = {
   'json': 'wadofstuff.django.serializers.json'
 }
+
+try:
+  STRIPE_API_KEY = os.environ['STRIPE_PROD_API_KEY']
+except:
+  STRIPE_API_KEY = os.environ['STRIPE_TEST_API_KEY']
+
 #if (DEBUG):
 #  from settings_dev import *
 

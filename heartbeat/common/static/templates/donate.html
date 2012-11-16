@@ -1,0 +1,47 @@
+<form class="form-horizontal" action="" method="POST" id="payment-form">
+  <div class="control-group <% if (errors.donation) {%>error<%}%>">
+    <label class='control-label'>Donation Amount</label>
+    <div class="controls input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" size="20" name="donation" class="donation" <% if (donation > 0) {%> value="<%= donation %>" <%}%>/>
+    <% if (errors.donation) {%>
+      <span class="help-inline"><%= errors.donation %></span>
+    <% } %>
+    </div>
+  </div>
+  <div class="control-group <% if (errors.number) {%>error<%}%>">
+    <label class='control-label'>Card Number</label>
+    <div class="controls">
+    <input type="text" size="20" autocomplete="off" class="card-number"/>
+    <% if (errors.number) {%>
+    <span class="help-inline"><%= errors.number %></span>
+    <% } %>
+    </div>
+  </div>
+  <div class="control-group <% if (errors.cvc) {%>error<%}%>">
+    <label class='control-label'>CVC</label>
+    <div class="controls">
+      <input type="text" size="4" autocomplete="off" class="card-cvc"/>
+      <% if (errors.cvc) {%>
+      <span class="help-inline"><%= errors.cvc %></span>
+      <% } %>
+    </div>
+  </div>
+  <div class="control-group <% if (errors.exp_year || errors.exp_month) {%>error<%}%>">
+    <label class='control-label'>Expiration (MM/YYYY)</label>
+    <div class="controls">
+      <input type="text" size="2" class="card-expiry-month span2"/>
+      <span> / </span>
+      <input type="text" size="4" class="card-expiry-year span2"/>
+      <% if (errors.exp_year || errors.exp_month) {%>
+      <span class="help-inline">Looks like your date is a little off></span>
+      <% } %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="submit-button">Submit Payment</button>
+    </div>
+  </div>
+
+</form>
