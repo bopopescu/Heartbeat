@@ -1,8 +1,16 @@
+@red : #CC1D1D;
+@footerHeight: 150px;
+
 html, body {
-  min-height: 100%
+  height: 100%
 }
 
-@red : #CC1D1D;
+#wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -@footerHeight;
+}
 
 .navbar {
   padding-top: 20px;
@@ -28,13 +36,12 @@ html, body {
   }
 }
 
-footer {
+.footer {
+  height: @footerHeight;
   border-top-width: 8px;
   border-top-style: solid;
   border-top-color: @red;
   background-color: lighten(@red, 5%);
-  min-height: 300px;
-  height: 100%;
 }
 
 .tip {
@@ -69,6 +76,12 @@ footer {
 
 .center {
   text-align: center;
+}
+form .row {
+label { padding-right: 5px; }
+  label, input {
+    display: inline;
+  }
 }
 
 .circle {
@@ -112,4 +125,7 @@ footer {
 }
 .push-down {
   padding-bottom: 50px;
+}
+.push {
+  height: @footerHeight;
 }
