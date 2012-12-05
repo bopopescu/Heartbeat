@@ -27,12 +27,41 @@ html, body {
 }
 
 .bar {
-  margin: 0 auto;
+  min-height: 300px;
+  border-style: solid;
+  border-width: 0px;
+  border-color: black;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   margin-top: 30px;
-  text-align: center;
+  margin-bottom: 50px;
+  -moz-box-shadow: 0px 0px 5px #505050;
+  -webkit-box-shadow: 0px 0px 5px #505050;
+  box-shadow: 0px 0px 5px #505050;
+  .box-padding {
+    padding: 45px 30px 0px 50px;
+    //margin: -45px -30px 0px -50px;
+  }
+  h1 {
+    font-size: 2.25em;
+    font-weight: bold;
+    //color: #312D2D;
+  }
   h2 {
-    margin-top: 30px;
-    color: #312D2D;
+    font-size: 1.9em;
+    font-weight: normal;
+  }
+  span5 {
+    height: 100%;
+  }
+  .leftbar {
+/*    border-left-width: 8px;
+    border-left-style: solid;
+    border-left-color: @red;*/
+    padding: 50px 25px 0px 35px;
+    //margin-left: -8px;
+    min-height: 250px;
   }
 }
 
