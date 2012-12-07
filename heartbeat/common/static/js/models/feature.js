@@ -5,10 +5,8 @@ define([
     'util',
 ], function($, Backbone, _, util) {
   var Feature = Backbone.Model.extend({
-    defaults: {
-      url: function() {
-        return "/api/users/features/" + (this.get("id") >= 0) ? (id + "/") : ""; 
-      },
+    url: function() {
+      return "/api/users/features/" + ((this.get("id") >= 0) ? (this.get("id") + "/") : ""); 
     },
 
     initialize: function() {
