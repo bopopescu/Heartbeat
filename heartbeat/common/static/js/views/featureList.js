@@ -81,7 +81,7 @@ define([
             feature: featureId,
             up: up,
           };
-      if (prevvote.id >= 0) {
+      if (prevvote && prevvote.id >= 0) {
         vote.id = prevvote.id;
         if (prevvote.up == up) { // If we aren't changing the truthyness of the vote
           return;
