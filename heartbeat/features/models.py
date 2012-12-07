@@ -4,8 +4,8 @@ from django.db import models
 class Feature(models.Model):
   created_by = models.ForeignKey(User)
   slug = models.CharField(max_length=300)
-  accepted = models.BooleanField()
-  rejected = models.BooleanField()
+  accepted = models.BooleanField(default=False)
+  rejected = models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now_add=True)
 
 class Vote(models.Model):
