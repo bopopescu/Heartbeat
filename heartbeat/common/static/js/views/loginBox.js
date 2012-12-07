@@ -31,12 +31,8 @@ define([
             "click #admin": "handleclick",
         },
         render: function(error) {
-            var template = _.template( loginBoxTemplate, {
-              'error': this.model.get('error'),
-              'username': (this.model.get('username') == null) ? "" : this.model.get('username'),
-              'artist_id': this.model.get("artist_id"),
-              'csrf_token': this.model.get('csrf_token')
-            });
+            var template = _.template( loginBoxTemplate, this.model.toJSON()); 
+
             $(this.el).html(template);
             $("#username_login").dropdown();
             // Used for rerendering after an unsuccessful attempt

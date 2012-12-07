@@ -169,9 +169,10 @@ INSTALLED_APPS = (
     'registration',
     'artists',
     'userdata',
+    'features',
     'ads',
     'tagging',
-    #    'emencia.django.newsletter',
+    'emencia.django.newsletter',
     'gunicorn',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -217,6 +218,6 @@ try:
 except:
   STRIPE_API_KEY = os.environ['STRIPE_TEST_API_KEY']
 
-#if (DEBUG):
-#  from settings_dev import *
+if (DEBUG):
+  from settings_dev import *
 

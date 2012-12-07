@@ -13,6 +13,8 @@ import pdb
 import json
 
 def splash(request):
+  if request.user.is_authenticated():
+    return render_to_response("base.html")
   return render_to_response("splash.html")
 
 @ajax_required

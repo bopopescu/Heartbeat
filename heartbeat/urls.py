@@ -10,6 +10,8 @@ from users.api import UserResource, CreateProfileResource, ProfileResource
 
 from userdata.api import UserResource, FollowResource
 
+from features.api import FeatureResource, VoteResource
+
 admin.autodiscover()
 
 users_api = Api(api_name="users")
@@ -26,18 +28,19 @@ users_api.register(HotAlbumResource())
 users_api.register(UserResource())
 users_api.register(FollowResource())
 
+users_api.register(FeatureResource())
+users_api.register(VoteResource())
+
 urlpatterns = patterns(
     '',
     # Examples:
-    # url(r'^$', 'heartbeat.views.home', name='home'),
-    # url(r'^heartbeat/', include('heartbeat.foo.urls')),
-
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^register/', 'users.views.register'),
     url(r'^', include('artists.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^artists/', include('artists.urls')),
+    url(r'^features/', 'artists.views.base'),
     url(r'^api/', include(users_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^newsletters/', include('emencia.django.newsletter.urls')),

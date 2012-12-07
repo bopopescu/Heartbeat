@@ -23,19 +23,13 @@ define([
       this.model.bind("change", this.render);
       this.model.bind("reset", this.render);
       var that = this;
-      vent.bind("didfollow", function(artist_id) { 
-        if (artist_id == that.model.get("id")) { that.handlefollow(true) } 
-      });
-      vent.bind("unfollow", function(artist_id) { 
-        if (artist_id == that.model.get("id")) { that.handlefollow(false) } 
-      });
     }, 
     follow: function(event) {
-      vent.trigger("follow", this.model.get("id"));
+      vent.trigger("follow", [this.model.get("id")]);
       this.handlefollow(true);
     },
     unfollow: function(event) {
-      vent.trigger("unfollow", this.model.get("id"));
+      vent.trigger("unfollow", [this.model.get("id")]);
       this.handlefollow(false);
     },
     handlefollow: function(following) {

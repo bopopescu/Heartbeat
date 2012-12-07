@@ -24,13 +24,17 @@ define([
         render: function() {
             var template = _.template( loginViewTemplate, {
                 'username': (this.model.get('username') == null) ? "" : this.model.get('username'),
-                'csrf_token': this.model.get('csrf_token')
+                'csrf_token': this.model.get('csrf_token'),
+                'error': this.model.get('error'),
             });
             $(this.el).html(template);
             var user = this.model;
             var self = this;
             $(this.el).find("form").ajaxForm({
                 success: self.logIn,
+                error: function(xhr, text, error) {
+                  user.set({'error': $.parseJSON(xhr.responseText)['form_errors']['__all__'] });
+                }
             });
         },
         logIn: function(response, status, xhr, form) {

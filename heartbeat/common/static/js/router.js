@@ -21,6 +21,7 @@ define([
             'artists/:id/admin/': 'adminArtist',
             'artists/:artist_id/admin/album/new/': 'newAlbum',
             'artists/:artist_id/admin/album/:album_id/': 'editAlbum',
+            'features/': 'featureList',
             "*actions": 'defaultAction'
         },
         initialize: function() {
@@ -96,7 +97,6 @@ define([
         },
         artistDetails: function(id) {
           var that = this;
-          var following = this.user.isfollowing(id);
           require([ 'artist', 'views/artistDetail', 'text!templates/album.html' ], 
               function(Artist, ArtistDetailView, albumTemplate) {
             $("#content").html("<div id='artist_detail'></div>");
@@ -105,10 +105,14 @@ define([
               'url': '/api/users/artist_details/' + id + '/' });
             var artistView = new ArtistDetailView({ 'el': $("#artist_detail"),
               'model': that.artist,
-              'following': following,  
             });
-            that.artist.fetch();
-            artistView.render();
+            that.artist.fetch({
+              success: function(model) {
+                that.user.isfollowing(id, function(following) {
+                  artistView.handlefollow(following);
+                });
+              }, 
+            });
             that.currentViews = [ artistView ];
           });
         },
@@ -183,6 +187,28 @@ define([
               });
               editAlbum.render();
               that.currentViews = [ editAlbum ];
+            });
+          });
+        },
+        featureList: function() {
+          var that = this;
+          require(['features', 'views/featureList'], function(Features, FeatureList) {
+            that.user.whenLoggedIn(function(loggedin) {
+              if (!that.user.get('is_artist')) {
+                Backbone.history.navigate('/', {trigger: true }); 
+                return;
+              }
+              $("#content").html("<div id='featurelist'></div>");
+              var features = new Features();
+              var featureList = new FeatureList({ el: $("#featurelist"),
+                collection: features,
+                user_id: that.user.get('id'),
+              });
+              features.fetch({
+                success: function(a, b, c) {
+                  featureList.render();
+                },
+              });
             });
           });
         },

@@ -1,0 +1,34 @@
+<h1>Features</h1>
+
+<ul class="unstyled featurelist">
+<% counter = 0 %>
+<% features.each(function(feature) { %>
+  <% vote = feature.getVote(user_id) %>
+  <li>
+    <div class="col">
+      <% if (vote && vote.up) { %>
+        <i id='<%= feature.id %>' class="icon-thumbs-up" data-index="<%= counter %>" ></i> 
+      <% } else { %> 
+        <i id='<%= feature.id %>' class="icon-thumbs-up" data-index="<%= counter %>" ></i> 
+      <% } %> 
+      
+      <%= feature.votes() %>
+      <% if (vote && !vote.up) { %>
+        <i id='<%= feature.id %>' class="icon-thumbs-down" data-index="<%= counter %>" ></i> 
+      <% } else { %> 
+        <i id='<%= feature.id %>' class="icon-thumbs-down" data-index="<%= counter %>" ></i> 
+      <% } %> 
+      
+    </div>
+    <div class="featurecontent">
+      <p><%= feature.get("slug") %></p>
+      <p>Submitted <time class="timeago" datetime="<%= feature.get('created_at') %>"></time><br />
+        
+    </div>
+      
+  </li>
+  <% counter += 1 %>
+<% }); %>
+</ul>
+<a id="addfeature">Request a Feature</a>
+
