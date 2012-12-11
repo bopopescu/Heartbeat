@@ -21,7 +21,7 @@
       <% } %>
     </div>
     <div class="dropable controls">
-      <span class="btn btn-file">
+      <span class="span3 btn btn-file">
         <span class="fileupload-new">Select Cover</span>
         <span class="fileupload-exists">Change Cover</span>
         <input type="file" name="cover" id="id_cover" value='<%= cover %>' />
@@ -61,8 +61,14 @@
       <% if (song.get('download_link')) {%> fileupload-exists<% } else { %> fileupload-new <% } %>" 
       id=<%=index%> data-provides="fileupload">
         <input type="hidden" name="form-<%= index %>-id" value="<%= song.get('id') || '' %>" />
+        <input type="hidden" name="form-<%= index %>-DELETE" id="form-<%= index %>-DELETE" />
         <label for="id_form-<%= index %>-name" class="control-label">
-          <i class="icon-move"></i>&nbsp;&nbsp;
+          <a class="delete">
+            <i class="icon-remove"></i>
+          </a>
+          <a id="icon-move">
+            <i class="icon-move"></i>
+          </a>
           <input type="hidden" id="id_form-<%= index %>-track_num" name="form-<%= index %>-track_num" value=<%= index+1 %> /> 
           <span class="track_num"> <%= index+1 %></span>&nbsp;&nbsp;&nbsp;
         </label>
@@ -76,7 +82,7 @@
         <span class="btn btn-file">
           <span class="fileupload-new">Select Song</span>
           <span class="fileupload-exists">Change Song</span>
-          <input type="file" class="file" name="form-<%= index %>-download_link" id="id_form-2-download_link" />
+          <input type="file" name="form-<%= index %>-download_link" id="id_form-2-download_link" />
         </span>
     </li>
     <% }) %>

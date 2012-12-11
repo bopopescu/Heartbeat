@@ -18,7 +18,7 @@ require.config({
         'jquery-ui': 'libs/jquery/jquery-ui-1.9.0.custom.min',
         'jquery.cookie': 'libs/jquery.cookie/jquery.cookie',
         'jquery.filedownload': 'libs/jquery.filedownload/jquery.filedownload',
-        'formset': 'libs/formset/jquery.formset.min',
+        'formset': 'libs/formset/jquery.formset',
         'modernizr': 'libs/modernizr/modernizr.min',
         'stripe': 'https://js.stripe.com/v1/?',
         'user': 'models/user',

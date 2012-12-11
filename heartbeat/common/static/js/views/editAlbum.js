@@ -46,11 +46,14 @@ define([
           that.model.setReleaseDate($(this).data().date);
         });
       $(".song ").formset({
+        deleteText: "",
+        deleteCssClass: "delete",
         added: function(row) {
           that.model.addSong();
           $(row).find("input[id$=track_num]").val(that.model.songCount());
           $(row).find(".track_num").html(that.model.songCount());
           $(row).find("input[name$=id]").val('');
+          $(row).find(".fileupload-preview.uneditable-input").html('');
         },
         removed: function(row) {
           that.model.removeSong(parseInt(row.attr('id')));
