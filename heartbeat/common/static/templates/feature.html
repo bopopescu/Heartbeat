@@ -1,0 +1,23 @@
+<li>
+  <div class="col">
+    <% if (vote && vote.up) { %>
+      <i id='<%= feature.id %>' class="icon-thumbs-up" data-index="<%= index %>" ></i>
+    <% } else { %>
+      <i id='<%= feature.id %>' class="icon-thumbs-up" data-index="<%= index %>" ></i>
+    <% } %>
+
+    <%= feature.votes() %>
+    <% if (vote && !vote.up) { %>
+      <i id='<%= feature.id %>' class="icon-thumbs-down" data-index="<%= index %>" ></i>
+    <% } else { %>
+      <i id='<%= feature.id %>' class="icon-thumbs-down" data-index="<%= index %>" ></i>
+    <% } %>
+
+  </div>
+  <div class="featurecontent">
+    <p><%= feature.get("slug") %></p>
+    <p>Submitted <time class="timeago" datetime="<%= feature.get('created_at') %>"></time><br />
+
+  </div>
+
+</li>
