@@ -1,4 +1,6 @@
 *.log
 *.pot
 *.pyc
+*.swp
 settings_dev.py
+.DS_STORE
