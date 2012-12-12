@@ -3,6 +3,7 @@ INSTALL.txt
 LICENSE.txt
 MANIFEST.in
 README.txt
+setup.py
 django_tagging.egg-info/PKG-INFO
 django_tagging.egg-info/SOURCES.txt
 django_tagging.egg-info/dependency_links.txt
