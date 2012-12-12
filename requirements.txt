@@ -7,7 +7,6 @@ distribute==0.6.10
 dj-database-url==0.2.1
 django-pylibmc-sasl==0.2.4
 django-registration==0.8
-svn+http://django-tagging.googlecode.com/svn/trunk@185#egg=django_tagging-0.4.dev1-py2.7-dev_r185
 gevent==0.13.8
 greenlet==0.4.0
 gunicorn==0.15.0
