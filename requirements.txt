@@ -20,7 +20,6 @@ python-dateutil==1.5
 requests==0.14.2
 six==1.2.0
 stripe==1.7.5
-tagging==0.2.1
 vobject==0.8.1c
 wadofstuff-django-serializers==1.1.0
 wsgiref==0.1.2
