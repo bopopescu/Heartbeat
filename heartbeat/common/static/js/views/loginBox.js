@@ -29,6 +29,7 @@ define([
             "click #username": "handleclick",
             "click #register": "register",
             "click #admin": "handleclick",
+            "click #features": "handleclick",
         },
         render: function(error) {
             var template = _.template( loginBoxTemplate, this.model.toJSON()); 
