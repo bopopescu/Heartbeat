@@ -3,10 +3,12 @@ Django==1.4
 MySQL-python==1.2.3
 PIL==1.1.7
 South==0.7.5
+boto==2.6.0
 distribute==0.6.10
 dj-database-url==0.2.1
 django-pylibmc-sasl==0.2.4
 django-registration==0.8
+django-storages==1.1.5
 django-tagging==0.3.1
 gevent==0.13.8
 greenlet==0.4.0
@@ -21,6 +23,7 @@ python-dateutil==1.5
 requests==0.14.2
 six==1.2.0
 stripe==1.7.5
+tagging==0.2.1
 vobject==0.8.1c
 wadofstuff-django-serializers==1.1.0
 wsgiref==0.1.2
