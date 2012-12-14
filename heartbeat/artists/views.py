@@ -15,8 +15,8 @@ import json
 
 def splash(request):
   if request.user.is_authenticated():
-    return render_to_response("base.html")
-  return render_to_response("splash.html", context=RequestContext(request))
+    return render_to_response("base.html", context_instance=RequestContext(request))
+  return render_to_response("splash.html", context_instance=RequestContext(request))
 
 @ajax_required
 def base(request):

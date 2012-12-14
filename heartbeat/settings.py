@@ -233,6 +233,6 @@ try:
 except:
   STRIPE_API_KEY = os.environ['STRIPE_TEST_API_KEY']
 
-#if (DEBUG):
-#  from settings_dev import *
+if (DEBUG):
+  from settings_dev import *
 

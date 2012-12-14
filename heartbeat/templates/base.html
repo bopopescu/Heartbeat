@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <head>
-    <link rel="stylesheet/less" type="text/css" href="/static/css/application.less" />
-    <script src="/static/js/less-1.3.1.min.js"></script>
+  <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}css/application.less" />
+  <script src="{{ STATIC_URL }}js/less-1.3.1.min.js"></script>
   {% comment %}
-    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
     <link rel="stylesheet" href="/static/css/smoothness/jquery-ui-1.8.19.custom.css" />
     <!--  <link rel="stylesheet" href="/static/style.css" /> -->
     <link rel="stylesheet" href="/static/css/datepicker.css" />
@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="/static/css/bootstrap-fileupload.css" />
   {% endcomment %}
   {% if debug %}
-    <script data-main="/static/js/main" src="/static/js/libs/require/require.js" ></script> 
+    <script data-main="/static/js/main" src="{{STATIC_URL }}js/libs/require/require.js" ></script> 
   {% else %}
-    <script src="/static/js/main-built.js" ></script>  
+    <script src="{{ STATIC_URL }}js/main-built.js" ></script>  
   {% endif %}
 
   <title>{% block pagetitle %}Home{% endblock %}</title>
@@ -26,6 +26,7 @@ mixpanel.init("1004db980d4cfdafa269a1d813a01038");</script><!-- end Mixpanel -->
   
 </head>
 <body>
+  {{STATIC_URL}}
   <div class="navbar">
     <div class="navbar-inner-hb">
       <div class="container">
