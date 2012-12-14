@@ -1,11 +1,10 @@
 from django.shortcuts import render_to_response
-
-import pdb
+from django.template import RequestContext
 
 def ajax_required(function):
     def decorator(request, *args, **kwargs):
         if not request.is_ajax():
-            return render_to_response("base.html")
+            return render_to_response("base.html", context_instance=RequestContext(request))
         return function(request, *args, **kwargs)
     return decorator
         

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.forms.models import inlineformset_factory 
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 from models import Album, Song
 from forms import AlbumForm
@@ -15,14 +16,13 @@ import json
 def splash(request):
   if request.user.is_authenticated():
     return render_to_response("base.html")
-  return render_to_response("splash.html")
+  return render_to_response("splash.html", context=RequestContext(request))
 
 @ajax_required
 def base(request):
     return HttpResponse("")
 
 def donate(request, artist_id):
-  pdb.set_trace()
   if not request.is_ajax() and request.method == "GET":
     return render_to_response("base.html")
   if request.method == "POST":
@@ -47,8 +47,6 @@ def put_album(request, artist_id, album_id):
 def create_album(request, artist_id, album_id=None):
   if request.method != "POST":
     return HttpResponse(json.dumps({ 'error': 'Invalid http method for this uri' }))
-  import pdb
-  pdb.set_trace()
   SongFormset = inlineformset_factory(Album, Song)
   if album_id is not None:
     album = Album.objects.get(pk=album_id)

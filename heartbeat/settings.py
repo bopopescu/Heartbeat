@@ -12,6 +12,12 @@ ADMINS = (
     ('Ben Augarten', 'baugarten@gmail.com'),
 )
 
+INTERNAL_IPS = (
+  'localhost',
+  'localhost:8000',
+  '127.0.0.1',
+    )
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -171,6 +177,7 @@ INSTALLED_APPS = (
     'userdata',
     'features',
     'ads',
+    #    'crowdfund',
     'tagging',
     'emencia.django.newsletter',
     'gunicorn',
