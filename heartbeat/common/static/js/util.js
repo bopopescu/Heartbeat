@@ -6,9 +6,9 @@ define([
     return {
         handleClick: function(event) {
           event.preventDefault();
-            if ($(event.target).attr('href') !== undefined) {
-              Backbone.history.navigate($(event.target).attr("href"), { trigger: true })
-            }
+          if ($(event.target).attr('href') !== undefined) {
+            Backbone.history.navigate($(event.target).attr("href"), { trigger: true })
+          }
         },
         hasOwnProperty: function(obj, prop){
           var proto = obj.__proto__ || obj.constructor.prototype;
