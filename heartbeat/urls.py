@@ -10,7 +10,7 @@ from users.api import UserResource, CreateProfileResource, ProfileResource
 
 from userdata.api import UserResource, FollowResource
 
-from crowdfund.api import CampaignResource, RewardResource
+#from crowdfund.api import CampaignResource, RewardResource
 
 admin.autodiscover()
 
@@ -28,8 +28,8 @@ users_api.register(HotAlbumResource())
 users_api.register(UserResource())
 users_api.register(FollowResource())
 
-users_api.register(CampaignResource())
-users_api.register(RewardResource())
+#users_api.register(CampaignResource())
+#users_api.register(RewardResource())
 
 urlpatterns = patterns(
     '',
