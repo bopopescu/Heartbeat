@@ -175,7 +175,6 @@ INSTALLED_APPS = (
     'registration',
     'artists',
     'userdata',
-    'features',
     'ads',
     #    'crowdfund',
     'tagging',
