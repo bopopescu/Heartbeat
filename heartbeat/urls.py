@@ -40,7 +40,7 @@ urlpatterns = patterns(
     url(r'^', include('artists.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^artists/', include('artists.urls')),
-    url(r'^offers/', include('crowdfund.offers.urls')),
+    #    url(r'^offers/', include('crowdfund.offers.urls')),
     url(r'^features/', 'artists.views.base'),
     url(r'^api/', include(users_api.urls)),
     url(r'^admin/', include(admin.site.urls)),
