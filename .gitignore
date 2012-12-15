@@ -3,5 +3,5 @@
 *.pyc
 *.swp
 settings_dev.py
-settings.py
 .DS_STORE
+.DS_Store
