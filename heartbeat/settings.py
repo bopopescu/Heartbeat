@@ -233,6 +233,10 @@ try:
 except:
   STRIPE_API_KEY = os.environ['STRIPE_TEST_API_KEY']
 
+ASSETS = (
+  'favicon.ico',
+)
+
 if (DEBUG):
   from settings_dev import *
 

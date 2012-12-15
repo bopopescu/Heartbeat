@@ -52,4 +52,8 @@ urlpatterns += patterns('',
       'document_root': settings.MEDIA_ROOT,
       }),
     )
-#urlpatterns += staticfiles_urlpatterns()
+urls = [('^%s$' % f, 'redirect_to', {'url': settings.STATIC_URL + f}) for f in settings.ASSETS]
+urlpatterns += patterns('django.views.generic.simple', *urls)
+
+if settings.DEBUG:
+  urlpatterns += staticfiles_urlpatterns()
