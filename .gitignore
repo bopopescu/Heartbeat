@@ -5,3 +5,4 @@
 settings_dev.py
 .DS_STORE
 .DS_Store
+heartbeat/static
