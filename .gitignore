@@ -4,5 +4,5 @@
 *.swp
 settings_dev.py
 .DS_STORE
-.DS_Store
+env/.DS_Store
 heartbeat/static
