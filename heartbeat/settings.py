@@ -128,6 +128,7 @@ ROOT_URLCONF = 'urls'
 LOGIN_URL = '/accounts/login/'
 
 LOGIN_EXEMPT_URLS = (
+    r'^$',
     r'^static/',
     r'^media/',
     r'^admin/',
