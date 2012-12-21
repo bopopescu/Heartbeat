@@ -30,7 +30,10 @@ print "Compiling css..."
 call(['lessc', 'heartbeat/common/static/css/application.less', 'heartbeat/common/static/built/application.css', '--compress'])
 
 print "Compiling splash.js"
-call(['uglifyjs', 'heartbeat/common/static/splash.js', '-o', 'heartbeat/common/static/built/splash.min.js'])
+call(['node', 'heartbeat/common/static/js/r.js', '-o',
+  'name=heartbeat/common/static/splash',
+  'out=heartbeat/common/static/built/splash.min.js',
+  'include=heartbeat/common/static/js/libs/require/require'])
 
 print "Pushing to github.."
 call(['git', 'add', 'heartbeat/common/static/built/splash.min.js'])
