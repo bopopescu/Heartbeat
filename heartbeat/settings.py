@@ -88,7 +88,7 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, "common", "static"),
+    os.path.join(PROJECT_DIR, "common", "static", "built"),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -128,10 +128,12 @@ ROOT_URLCONF = 'urls'
 LOGIN_URL = '/accounts/login/'
 
 LOGIN_EXEMPT_URLS = (
+    r'^$',
     r'^static/',
     r'^media/',
     r'^admin/',
     r'^api/',
+    r'^newsletters/mailing/subscribe/',
     )
 
 # Python dotted path to the WSGI application used by Django's runserver.

@@ -1,8 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
   <head>
-    <link rel="stylesheet/less" type="text/css" href="/static/css/application.less" />
-    <script src="/static/js/less-1.3.1.min.js"></script>
+    {% if debug %}
+      <link rel="stylesheet/less" type="text/css" href="/static/css/application.less" />
+      <script src="/static/js/less-1.3.1.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <script src="{{ STATIC_URL }}splash.js"></script>
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{{STATIC_URL }}application.css" />
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+      <script src="{{ STATIC_URL }}splash.min.js"></script>
+    {% endif %}
     <title>Heartbeat</title>
   </head>
   <body>
@@ -31,7 +39,7 @@
           </h1>
           <br />
           <h2>
-            Sell yourself. Give the fans who love you an opportunity to spend a day in the life.
+            Let your fans connect you to where and when you preform.
           </h2>
         </div>
         </div>
@@ -39,9 +47,9 @@
           <div class="leftbar">
             Sign up for early access to our beta
             <br />
-            <input placeholder="email@address.com" type="text" name="email" />
+            <input placeholder="email@address.com" id="email" type="text" name="email" />
             <br />
-            <button class="btn btn-large btn-primary">Sign up, its free</button>
+            <button id="signup" class="btn btn-large btn-primary">Sign up, its free</button>
           </div>
         </div>
       </div>
@@ -49,16 +57,49 @@
     <div class="container">
       <div class="row push-down">
         <div class="span4">
-          <h4>download music, free</h4>
-          Tired of paying too much for music, giving your money away to record labels? At Heartbeat you can download music for free and donate if you like them. The artist gets 90% of everything you donate!
+          <div class="row">
+            <div class="span4">
+              <div class="icon-header">
+                <i class="icon-bullhorn"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span4">
+              <h4>demand the artists your love</h4>
+              Host concerts by popular demand. Travel where fans demand you. Concerts are booked as soon as enough fans confirm. No more empty seats.
+            </div>
+          </div>
         </div>
         <div class="span4">
-          <h4>meet fans</h4>
-          Your time should be spent recording music and connecting with fans. We make that easy. You can update fans, ask for feedback, figure out where to tour, fund an album, and more! If you can't do it, just ask us to make it a reality!
+          <div class="row">
+            <div class="span4">
+              <div class="icon-header">
+                <i class="icon-gift"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span4">
+              <h4>fund concerts in fashion</h4>
+              Bundle merch and exclusive access to your life with your tickets. Add in shirts, records, dinners, and private gigs to raise even more money from concerts. 
+            </div>
+          </div>
         </div>
         <div class="span4">
-          <h4>Social, again</h4>
-          No one likes social music, but the experience takes on new life when fans and artists collide. Welcome to the collision.
+          <div class="row">
+            <div class="span4">
+              <div class="icon-header">
+                <i class="icon-group"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span4">
+              <h4>house a crowd every night</h4>
+              Venues, no more guessing whether locals want to listen to an artist. Let fans match you with the artists they love.
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
