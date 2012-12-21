@@ -7,7 +7,7 @@ $(function() {
     var emailregexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     if (email.match(emailregexp)) {
       $("#signup").attr("disabled", "disabled");
-      $(".leftbar").append("<img id='loader' src='/static/img/ajax-loader.gif' /></img>");
+      $(".leftbar").append("<img id='loader' src='http://heartbeatapp.s3.amazonaws.com/img/ajax-loader.gif' /></img>");
       $.ajax({
         type: 'POST',
         url: "/newsletters/mailing/subscribe/1/",
