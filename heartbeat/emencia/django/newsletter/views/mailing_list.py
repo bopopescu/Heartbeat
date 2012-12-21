@@ -39,16 +39,18 @@ def view_mailinglist_subscribe(request, form_class, mailing_list_id=None):
     if mailing_list_id:
         mailing_list = get_object_or_404(MailingList, id=mailing_list_id)
 
+
+    form = form_class(request.POST)
+    resp = render_to_response('newsletter/mailing_list_subscribe.html',
+                              {'subscribed': subscribed,
+                                'mailing_list': mailing_list,
+                                'form': form},
+                              context_instance=RequestContext(request))
     if request.POST and not subscribed:
-        form = form_class(request.POST)
         if form.is_valid():
             form.save(mailing_list)
             subscribed = True
-    else:
-        form = form_class()
+        else:
+            resp.status_code = 400
 
-    return render_to_response('newsletter/mailing_list_subscribe.html',
-                              {'subscribed': subscribed,
-                               'mailing_list': mailing_list,
-                               'form': form},
-                              context_instance=RequestContext(request))
+    return resp
