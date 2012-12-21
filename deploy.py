@@ -25,18 +25,17 @@ for var in ENVIRON:
 print "Server has all environ vars"
 
 print "Compiling js..."
-print STATIC_FILES_DIR
 call(['node', 'heartbeat/common/static/js/r.js', '-o', 'heartbeat/common/static/js/build.js'])
 print "Compiling css..."
-call(['lessc', 'heartbeat/common/static/css/application.less', 'heartbeat/common/static/application.css', '--compress'])
+call(['lessc', 'heartbeat/common/static/css/application.less', 'heartbeat/common/static/built/application.css', '--compress'])
 
 print "Compiling splash.js"
-call(['node', 'heartbeat/common/static/js/r.js', '-o', 'name=heartbeat/common/static/splash.js', 'out=heartbeat/common/static/splash.min.js', 'baseUrl=.'])
+call(['node', 'heartbeat/common/static/js/r.js', '-o', 'name=heartbeat/common/static/splash.js', 'out=heartbeat/common/static/built/splash.min.js', 'baseUrl=.'])
 
 print "Pushing to github.."
-call(['git', 'add', 'heartbeat/common/static/splash.min.js'])
-call(['git', 'add', 'heartbeat/common/static/main-built.js'])
-call(['git', 'add', 'heartbeat/common/static/application.css'])
+call(['git', 'add', 'heartbeat/common/static/built/splash.min.js'])
+call(['git', 'add', 'heartbeat/common/static/built/main-built.js'])
+call(['git', 'add', 'heartbeat/common/static/built/application.css'])
 call(['git', 'commit', '-m', '"Generated commit, built js and css"'])
 
 call(['git', 'push', 'origin', 'master'])
