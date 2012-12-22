@@ -1,5 +1,5 @@
 $(function() {
-  var tweet = "Let your fans connect you to where and when you preform";
+  var tweet = "Demand your favorite artists when and where you want them";
   var facebooktitle = "Heartbeat: A new way to music";
   var url = "http://www.heartbeat.mx";
   $("#signup").click(function(event) {
