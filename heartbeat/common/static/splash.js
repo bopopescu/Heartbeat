@@ -5,12 +5,13 @@ $(function() {
   $("#signup").click(function(event) {
     var email = $("#email").val();
     var emailregexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (email.match(emailregexp)) {
+    var mailingList = parseInt($('input:radio[name=user]:checked').val());
+    if (email.match(emailregexp) && mailingList > 0 && mailingList < 4) {
       $("#signup").attr("disabled", "disabled");
       $(".leftbar").append("<img id='loader' src='http://heartbeatapp.s3.amazonaws.com/img/ajax-loader.gif' /></img>");
       $.ajax({
         type: 'POST',
-        url: "/newsletters/mailing/subscribe/1/",
+        url: "/newsletters/mailing/subscribe/" + mailingList + "/",
         data: {
           email: email,
         },

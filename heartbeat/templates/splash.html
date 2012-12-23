@@ -60,10 +60,17 @@
         <div class="span5">
           <div class="leftbar">
             Sign up for early access to our beta
-            <br />
-            <input placeholder="email@address.com" id="email" type="text" name="email" />
-            <br />
-            <button id="signup" class="btn btn-large btn-primary">Sign up, its free</button>
+            <form class="form-horizontal">
+              <input placeholder="email@address.com" id="email" type="text" name="email" />
+              <h4>I'm a</h4>
+              <ul class="unstyled user-list">
+                <input type="radio" name="user" value=0 selected="selected" style="display:none" />
+                <li><input type="radio" name="user" value=1 /><span>Fan</span></li>
+                <li><input type="radio" name="user" value=2 />Artist</li>
+                <li><input type="radio" name="user" value=3 />Venue</li>
+              </ul>
+              <button id="signup" class="btn btn-large btn-primary">Sign up, its free</button>
+            </form>
           </div>
         </div>
       </div>
