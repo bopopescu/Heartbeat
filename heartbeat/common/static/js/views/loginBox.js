@@ -18,10 +18,9 @@ define([
         },
         initialize: function(options) {
             this.options = _.extend(this.defaults, this.options);
-            _.bindAll(this, 'render', 'logout', 'login');
+            _.bindAll(this, 'render', 'logout');
             this.model.bind('error', this.render);
             this.model.bind('change', this.render);
-            this.model.bind('login', this.login);
             this.render();
         },
         events: {
@@ -61,13 +60,8 @@ define([
                 },
             });
         },
-        login: function() {
-          vent.trigger("login");
-          vent.trigger("refresh");
-        },
         logout: function() {
           this.model.logOut();
-          vent.trigger("logout");
         },
         register: function() {
           Backbone.history.navigate("/accounts/register/", { trigger: true });

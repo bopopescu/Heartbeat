@@ -16,13 +16,15 @@ define([
       "click #follow": "follow",
       "click #unfollow": "unfollow",
       "click #donate": "donate",
+      "click #concert": "bookConcert",
     },
     initialize: function(options) {
+      var self = this;
       _.defaults(options, this.defaults);
       _.bindAll(this, 'render', 'follow', 'unfollow', 'handlefollow');
       this.model.bind("change", this.render);
       this.model.bind("reset", this.render);
-      var that = this;
+      vent.on('logout', function() { self.handlefollow(false); });
     }, 
     follow: function(event) {
       vent.trigger("follow", [this.model.get("id")]);
@@ -44,7 +46,6 @@ define([
         return;
       }
       var artistJSON = artist.toJSON();
-      artistJSON.following = this.options.following;
       $(this.el).html(_.template(artistDetailTemplate, artistJSON));
       $('.carousel').carousel(2500); 
       var admin = artist.is_self();
@@ -58,6 +59,9 @@ define([
     },
     donate: function() {
       Backbone.history.navigate("/artists/" + this.model.get("id") + "/donate/", {trigger: true});
+    },
+    bookConcert: function() {
+      Backbone.history.navigate("/offers/new/" + this.model.get("id") + "/", {trigger: true});
     },
   });
   return ArtistDetail;

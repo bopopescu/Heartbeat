@@ -20,7 +20,7 @@ define([
             following: {},
         },
         initialize: function() {
-            _.bindAll(this, 'logIn', 'loggedIn', 'artist_id', 'follow', 'unfollow');
+            _.bindAll(this, 'logIn', 'loggedIn', 'artist_id', 'follow', 'unfollow', 'follows');
             vent.bind('follow', this.follow);
             vent.bind('unfollow', this.unfollow);
             if ($.cookie("user")) {
@@ -97,7 +97,7 @@ define([
               following: this.parseFollows(response["follows"]),
               is_staff: response["is_staff"] || response["is_superuser"],
             });
-            this.trigger("login");
+            vent.trigger("login", this);
             this.trigger("didfollow", this.get("following"));
           }
           return true
@@ -121,7 +121,7 @@ define([
                 id: -1,
                 error: "",
             });
-            this.trigger("logout");
+            vent.trigger("logout");
         },
         artist_id: function() {
           return this.get('artist_id');
@@ -170,13 +170,16 @@ define([
         },
         isfollowing: function(artist_id, callback) {
           if (this.get("checked")) {
-            callback(util.hasOwnProperty(this.get("following"), artist_id));
+            callback(follows(artist_id));
           } else {
-            var that = this;
+            var self = this;
             this.on("checked", function() { 
-              callback(util.hasOwnProperty(this.get("following"), artist_id));
+              callback(self.follows(artist_id));
             });
           }
+        },
+        follows: function(artist_id) {
+          return util.hasOwnProperty(this.get("following"), artist_id);
         },
   });
   return User;

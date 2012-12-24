@@ -52,16 +52,8 @@ define([
           Vent.on('logout', this.logout);
         },
         login: function() {
-          if (this.artist) {
-            this.artist.attributes['user_artist_id'] = this.user.artist_id();
-          }
-          this.rerender();
         },
         logout: function() {
-          if (this.artist) {
-            this.artist.attributes['user_artist_id'] = -1;
-          }
-          this.rerender();
         },
         rerender: function() {
           if (this.currentViews) {
@@ -121,6 +113,7 @@ define([
           });
           this.artist.fetch({
             success: function(model) {
+              self.artist.attributes['following'] = self.user.follows(self.artist.get('id'));
               artistView.render();
               self.user.isfollowing(id, function(following) {
                 artistView.handlefollow(following);

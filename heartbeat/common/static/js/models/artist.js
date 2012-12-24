@@ -4,21 +4,41 @@ define([
   'backbone',
   'album',
   'albums',
-], function ($, _, Backbone, Album, Albums) {
+  'vent',
+], function ($, _, Backbone, Album, Albums, vent) {
+  var USER_ARTIST_ID = 'user_artist_id';
   var Artist = Backbone.Model.extend({
     defaults: {
       id: -1,
       name: "",
+      following: false,
     },
     initialize: function(options) {
-        _.bindAll(this, 'is_self');
+        _.bindAll(this, 'is_self', 'logout', 'login');
         if (options != void 0
             && options.url != void 0) {
             this.url = options.url;
         }
+        vent.on('login', this.login);
+        vent.on('logout', this.logout);
     },
     url: function() {
       return "/api/users/artist/" + this.get("pk") + "/";
+    },
+    logout: function() {
+      this.set({ 
+        USER_ARTIST_ID: -1,
+        following: false,
+      });
+    },
+    login: function(user) {
+      var self = this;
+      user.isfollowing(this.get('id'), function(following) {
+        self.set({ 
+          USER_ARTIST_ID: user.artist_id(),
+          following: following,
+        });
+      });
     },
     parse: function(response) {
         console.log(response);
