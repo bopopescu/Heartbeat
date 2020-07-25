@@ -41,8 +41,8 @@ call(['git', 'add', 'heartbeat/common/static/built/main-built.js'])
 call(['git', 'add', 'heartbeat/common/static/built/application.css'])
 call(['git', 'commit', '-m', '"Generated commit, built js and css"'])
 
-call(['git', 'push', 'origin', 'master'])
+call(['git', 'push', 'origin', 'main'])
 print "Pushing to heroku.."
-#call(['cd ' + PROJECT_DIR + '; git push heroku master'])
+#call(['cd ' + PROJECT_DIR + '; git push heroku main'])
 #call(['cd ' + PROJECT_DIR + '; heroku run ./manage.py migrate'])
 
